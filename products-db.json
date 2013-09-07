@@ -1,0 +1,209 @@
+[
+  {
+    "name": "зерн. творог",
+    "protein": "15",
+    "carbonates": 0,
+    "fat": "18",
+    "energy": 6,
+    "weight": 100,
+    "portion": 150
+  },
+  {
+    "name": "тунец",
+    "protein": "30",
+    "carbonates": 0,
+    "fat": "1",
+    "energy": 130,
+    "weight": 100,
+    "portion": 130
+  },
+  {
+    "name": "овсянка",
+    "protein": "3",
+    "carbonates": "25",
+    "fat": "1",
+    "energy": "128",
+    "weight": "40",
+    "portion": 100
+  },
+  {
+    "name": "бат.мюсл",
+    "protein": "1",
+    "carbonates": "18",
+    "fat": "4.5",
+    "energy": "110",
+    "weight": "25",
+    "portion": 100
+  },
+  {
+    "name": "печеньки",
+    "protein": "4",
+    "carbonates": "35",
+    "fat": "8",
+    "energy": "224",
+    "weight": "60",
+    "portion": 100
+  },
+  {
+    "name": "две.порции.бел.",
+    "protein": "67",
+    "carbonates": "65",
+    "fat": "4",
+    "energy": "568",
+    "weight": "150",
+    "portion": 100
+  },
+  {
+    "name": "хлопья",
+    "protein": "3.5",
+    "carbonates": "40",
+    "fat": ".5",
+    "energy": "185",
+    "weight": "50",
+    "portion": 100
+  },
+  {
+    "name": "молоко",
+    "protein": "6",
+    "carbonates": "10",
+    "fat": "4",
+    "energy": "140",
+    "weight": "200",
+    "portion": 100
+  },
+  {
+    "name": "банан",
+    "protein": "1.5",
+    "carbonates": "20",
+    "fat": ".5",
+    "energy": "100",
+    "weight": "100",
+    "portion": 100
+  },
+  {
+    "name": "яблоко",
+    "protein": ".5",
+    "carbonates": "10",
+    "fat": ".5",
+    "energy": "50",
+    "weight": "100",
+    "portion": 100
+  },
+  {
+    "name": "яйцо.вкрутую",
+    "protein": "6",
+    "carbonates": ".5",
+    "fat": "5",
+    "energy": "77",
+    "weight": "50",
+    "portion": 100
+  },
+  {
+    "name": "цезарь.ролл",
+    "protein": "22",
+    "carbonates": "50",
+    "fat": "24",
+    "energy": "510",
+    "weight": 100,
+    "portion": 100
+  },
+  {
+    "name": "Куриная.грудка",
+    "protein": "23",
+    "carbonates": ".5",
+    "fat": "2",
+    "energy": "113",
+    "weight": "100",
+    "portion": 100
+  },
+  {
+    "name": "Карт.пюре",
+    "protein": "2.5",
+    "carbonates": "12",
+    "fat": "3",
+    "energy": "85",
+    "weight": 100,
+    "portion": 100
+  },
+  {
+    "name": "кокакола",
+    "protein": "0",
+    "carbonates": "10",
+    "fat": "0",
+    "energy": "40",
+    "weight": "100",
+    "portion": 100
+  },
+  {
+    "name": "сахар.чайная.ложка",
+    "protein": "0",
+    "carbonates": "8",
+    "fat": "0",
+    "energy": "30",
+    "weight": 100,
+    "portion": 100
+  },
+  {
+    "name": "рис.пол.пакета",
+    "protein": "5",
+    "carbonates": "48",
+    "fat": ".5",
+    "energy": "217",
+    "weight": 100,
+    "portion": 100
+  },
+  {
+    "name": "наггетсы",
+    "protein": "13",
+    "carbonates": "3.5",
+    "fat": "11",
+    "energy": "167",
+    "weight": "100",
+    "portion": 100
+  },
+  {
+    "name": "докторская",
+    "protein": "12",
+    "carbonates": "0",
+    "fat": "20",
+    "energy": "228",
+    "weight": "100",
+    "portion": 100
+  },
+  {
+    "name": "макароны",
+    "protein": "10",
+    "carbonates": "71",
+    "fat": "1",
+    "energy": "344",
+    "weight": "100",
+    "portion": 100
+  },
+  {
+    "name": "Творог.колбаской",
+    "protein": "8",
+    "carbonates": "3",
+    "fat": "0",
+    "energy": "46",
+    "weight": "100",
+    "portion": 100
+  },
+  {
+    "name": "хлеб.швед.",
+    "protein": "13",
+    "carbonates": "44",
+    "fat": "17",
+    "energy": "349",
+    "weight": "100",
+    "portion": 100
+  },
+  {
+    "name": "50",
+    "protein": "12.5",
+    "carbonates": "30",
+    "fat": ".5",
+    "energy": "порция.белка.Бел.",
+    "weight": 100,
+    "portion": 100
+  }
+]
