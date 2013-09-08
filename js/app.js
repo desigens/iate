@@ -1,7 +1,3 @@
-var _ = require('underscore'),
-	Backbone = require('backbone'),
-	db = require('./products-db.json');
-
 var ProductModel = Backbone.Model.extend({
 	attributes: {
 		proteins: NaN, //на 100гр
@@ -14,11 +10,12 @@ var ProductModel = Backbone.Model.extend({
 });
 
 var ProductsDBCollection = Backbone.Collection.extend({
-	model: ProductModel
+	model: ProductModel,
+	url: '/products-db.json'
 });
 
 var productsDB = new ProductsDBCollection();
-productsDB.reset(db);
+productsDB.fetch();
 
 var Eaten = Backbone.Model.extend({
 	attributes: {
