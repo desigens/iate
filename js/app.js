@@ -1,3 +1,5 @@
+var DEFAULT_WEIGHT = 100;
+
 var ProductModel = Backbone.Model.extend({
 	attributes: {
 		proteins: NaN, //на 100гр
@@ -5,7 +7,7 @@ var ProductModel = Backbone.Model.extend({
 		fats: NaN, //на 100гр
 		calories: NaN, //на 100гр
 		name: undefined,
-		portion: NaN // Вес порции (штуки, пачки)
+		portion: DEFAULT_WEIGHT // Вес порции (штуки, пачки)
 	}
 });
 
@@ -20,7 +22,7 @@ var Eaten = Backbone.Model.extend({
 	defaults: {
 		string: "",
 		productModel: "",
-		weight: 50,
+		weight: DEFAULT_WEIGHT,
 		value: {}
 	},
 	initialize: function () {
@@ -121,11 +123,25 @@ var InputView = Backbone.View.extend({
 	events: {
 		'keyup input': 'modelChange'
 	},
-	modelChange: function () {
+	filterInput: function () {
 		var input = this.$el.find('input').val();
-		this.model.set({
-			'string': input
-		})
+		return {
+			string: input.match(/([^0-9 ]+)/g),
+			numbers: input.match(/(\d+)/g)
+		}
+	},
+	modelChange: function () {
+		var data = this.filterInput();
+
+		if (data.numbers && data.numbers.length) {
+			this.model.set('weight', data.numbers[0])
+		} else {
+			this.model.set('weight', DEFAULT_WEIGHT)
+		}
+
+		if (data.string && data.string.length) {
+			this.model.set('string', data.string[0])
+		}
 	},
 	showMatch: function () {
 		var productModel = this.model.get('productModel'),
