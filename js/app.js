@@ -15,7 +15,6 @@ var ProductsDBCollection = Backbone.Collection.extend({
 });
 
 var productsDB = new ProductsDBCollection();
-productsDB.fetch();
 
 var Eaten = Backbone.Model.extend({
 	attributes: {
@@ -90,8 +89,42 @@ var Eaten = Backbone.Model.extend({
 
 });
 
-var e = new Eaten();
-e.set({
-	'string': 'тун',
-	'weight': 40
+// var e = new Eaten();
+// e.set({
+// 	'string': 'тун',
+// 	'weight': 40
+// });
+
+var ProductsDBView = Backbone.View.extend({
+	tagName: 'li',
+	template: _.template($('#db-item').html()),
+	initialize: function () {
+		//
+	},
+	render: function () {
+		this.$el.append(this.template(this.model.attributes));
+		return this;
+	}
 });
+
+var ProductsDBCollectionView = Backbone.View.extend({
+	tagName: 'ul',
+	initialize: function () {
+		this.collection.on('sync', this.render, this);
+		$('body').append(this.el);
+	},
+	render: function () {
+		this.collection.each(function(product) {
+			var view = new ProductsDBView({model: product});
+			this.$el.append(view.render().el)
+		}, this);
+
+		return this;
+	}
+});
+
+var productsDBCollectionView = new ProductsDBCollectionView({
+	collection: productsDB
+});
+
+productsDB.fetch();
