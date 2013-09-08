@@ -17,35 +17,36 @@ var ProductsDBCollection = Backbone.Collection.extend({
 var productsDB = new ProductsDBCollection();
 
 var Eaten = Backbone.Model.extend({
-	attributes: {
+	defaults: {
 		string: "",
 		productModel: "",
-		status: ""
+		weight: 50,
+		value: {}
 	},
 	initialize: function () {
-		this.on('change', this.calcNutrion, this);
+		this.on('change', this.calcValue, this);
 		this.on('change:string', this.findProduct, this);
 	},
-	calcNutrion: function () {
+	calcValue: function () {
 		var product = this.get('productModel'),
-			weight = parseInt(this.get('weight')) || 100,
+			weight = parseInt(this.get('weight')),
 			text;
-
 		if (product) {
-			text = "Съедено: ";
-			text += 'белков: ' + (parseInt(product.get('proteins')) * weight / 100);
-			text += ', углеводов: ' + (parseInt(product.get('carbohydrates')) * weight / 100);
-			text += ', жиров: ' + (parseInt(product.get('fats')) * weight / 100);
-			text += ', калорий: ' + (parseInt(product.get('calories')) * weight / 100);
-			console.log(text);
-		}	
+			this.set('value', {
+				proteins: parseInt(product.get('proteins')) * weight / 100,
+				carbohydrates: parseInt(product.get('carbohydrates')) * weight / 100,
+				fats: parseInt(product.get('fats')) * weight / 100,
+				calories: parseInt(product.get('calories')) * weight / 100,
+				weight: weight
+			})
+		} else {
+			this.unset('value')
+		}
 	},
 	filterProduct: function () {
 		var string = this.get('string'),
 			db = productsDB,
 			regexp = new RegExp(string);
-
-			// console.log('OLOLO', string, regexp);	
 
 		var found = productsDB.filter(function(item){
 			name = item.get('name');
@@ -114,7 +115,8 @@ var productsDBCollectionView = new ProductsDBCollectionView({
 
 var InputView = Backbone.View.extend({
 	initialize: function () {
-		this.model.on('change:productModel', this.showMatch, this)
+		this.model.on('change:productModel', this.showMatch, this);
+		this.model.on('change:value', this.showValue, this)
 	},
 	events: {
 		'keyup input': 'modelChange'
@@ -124,17 +126,27 @@ var InputView = Backbone.View.extend({
 		this.model.set({
 			'string': input
 		})
-		console.log(this.model.attributes)
 	},
 	showMatch: function () {
 		var productModel = this.model.get('productModel'),
-			status = this.$el.find('.eaten__status'),
+			product = this.$el.find('.eaten__product'),
 			template = _.template($('#db-item').html());
 
 		if (productModel) {
-			status.html(template(productModel.attributes));
+			product.html(template(productModel.attributes));
 		} else {
-			status.html('Нет совпадения');
+			product.html('Нет совпадения');
+		}
+	},
+	showValue: function (argument) {
+		var value = this.model.get('value'),
+			el = this.$el.find('.eaten__value'),
+			template = _.template($('#eaten-value').html());
+
+		if (value) {
+			el.html(template(value));
+		} else {
+			el.html('');
 		}
 	}
 });
