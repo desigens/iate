@@ -89,7 +89,7 @@ var Eaten = Backbone.Model.extend({
 
 });
 
-// var e = new Eaten();
+var eaten = new Eaten();
 // e.set({
 // 	'string': 'тун',
 // 	'weight': 40
@@ -125,6 +125,24 @@ var ProductsDBCollectionView = Backbone.View.extend({
 
 var productsDBCollectionView = new ProductsDBCollectionView({
 	collection: productsDB
+});
+
+var InputView = Backbone.View.extend({
+	events: {
+		'keyup': 'modelChange'
+	},
+	modelChange: function (argument) {
+		var input = this.$el.val();
+		this.model.set({
+			'string': input
+		})
+		// console.log(this.model.attributes)
+	}
+});
+
+var inputView = new InputView({
+	model: eaten,
+	el: $('#input')
 });
 
 productsDB.fetch();
