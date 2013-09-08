@@ -19,27 +19,12 @@ var productsDB = new ProductsDBCollection();
 var Eaten = Backbone.Model.extend({
 	attributes: {
 		string: "",
-		productModel: ""
+		productModel: "",
+		status: ""
 	},
 	initialize: function () {
 		this.on('change', this.calcNutrion, this);
 		this.on('change:string', this.findProduct, this);
-		this.on('change:productModel', this.showMatch, this)
-	},
-	showMatch: function () {
-		var product = this.get('productModel'),
-			text;
-
-		if (product) {
-			text = 'Найден подходящий продукт! ';
-			text += product.get('name') + ' (';
-			text += 'белки: ' + product.get('proteins');
-			text += ', углеводы: ' + product.get('carbohydrates');
-			text += ', жиры: ' + product.get('fats');
-			text += ', калории: ' + product.get('calories');
-			text += ")";
-			console.log(text);
-		}
 	},
 	calcNutrion: function () {
 		var product = this.get('productModel'),
@@ -128,21 +113,35 @@ var productsDBCollectionView = new ProductsDBCollectionView({
 });
 
 var InputView = Backbone.View.extend({
-	events: {
-		'keyup': 'modelChange'
+	initialize: function () {
+		this.model.on('change:productModel', this.showMatch, this)
 	},
-	modelChange: function (argument) {
-		var input = this.$el.val();
+	events: {
+		'keyup input': 'modelChange'
+	},
+	modelChange: function () {
+		var input = this.$el.find('input').val();
 		this.model.set({
 			'string': input
 		})
-		// console.log(this.model.attributes)
+		console.log(this.model.attributes)
+	},
+	showMatch: function () {
+		var productModel = this.model.get('productModel'),
+			status = this.$el.find('.eaten__status'),
+			template = _.template($('#db-item').html());
+
+		if (productModel) {
+			status.html(template(productModel.attributes));
+		} else {
+			status.html('Нет совпадения');
+		}
 	}
 });
 
 var inputView = new InputView({
 	model: eaten,
-	el: $('#input')
+	el: $('#eaten')
 });
 
 productsDB.fetch();
