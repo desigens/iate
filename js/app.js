@@ -1,175 +1,307 @@
 var DEFAULT_WEIGHT = 100;
 
-var ProductModel = Backbone.Model.extend({
-	attributes: {
-		proteins: NaN, //на 100гр
-		carbohydrates: NaN, //на 100гр
-		fats: NaN, //на 100гр
-		calories: NaN, //на 100гр
-		name: undefined,
-		portion: DEFAULT_WEIGHT // Вес порции (штуки, пачки)
-	}
-});
+//Конструктор пищевой ценности продукта
+var Value = function () {
+	this.proteins = 0; //на 100гр
+	this.carbohydrates = 0; //на 100гр
+	this.fats = 0; //на 100гр
+	this.calories = 0; //на 100гр
+	this.name = undefined;
+	this.portion = DEFAULT_WEIGHT; // Вес порции (штуки, пачки)
+};
 
-var ProductsDBCollection = Backbone.Collection.extend({
-	model: ProductModel,
-	url: '/products-db.json'
-});
+//Backbone Models
+var Models = {
+	
+	//Модель продукта в БД
+	Product: Backbone.Model.extend({
+		defaults: new Value()
+	}),
 
-var productsDB = new ProductsDBCollection();
+	//Модель съеденного
+	Eaten: Backbone.Model.extend({
+		
+		defaults: {
+			string: "",
+			product: undefined,
+			weight: DEFAULT_WEIGHT,
+			value: {}
+		},
+		initialize: function () {
+			this.on('change', this.calcValue, this);
+			this.on('change:string', this.findProduct, this);
+		},
+		calcValue: function () {
+			var product = this.get('product'),
+				weight = parseInt(this.get('weight'));
+			if (product) {
+				this.set('value', {
+					proteins: parseInt(product.proteins) * weight / DEFAULT_WEIGHT,
+					carbohydrates: parseInt(product.carbohydrates) * weight / DEFAULT_WEIGHT,
+					fats: parseInt(product.fats) * weight / DEFAULT_WEIGHT,
+					calories: parseInt(product.calories) * weight / DEFAULT_WEIGHT,
+					weight: weight
+				})
+			} else {
+				this.unset('value')
+			}
+		},
+		filterProduct: function () {
+			var string = this.get('string'),
+				db = productsDB,
+				regexp = new RegExp(string, 'gi');
 
-var Eaten = Backbone.Model.extend({
-	defaults: {
-		string: "",
-		productModel: "",
-		weight: DEFAULT_WEIGHT,
-		value: {}
-	},
-	initialize: function () {
-		this.on('change', this.calcValue, this);
-		this.on('change:string', this.findProduct, this);
-	},
-	calcValue: function () {
-		var product = this.get('productModel'),
-			weight = parseInt(this.get('weight')),
-			text;
-		if (product) {
-			this.set('value', {
-				proteins: parseInt(product.get('proteins')) * weight / 100,
-				carbohydrates: parseInt(product.get('carbohydrates')) * weight / 100,
-				fats: parseInt(product.get('fats')) * weight / 100,
-				calories: parseInt(product.get('calories')) * weight / 100,
-				weight: weight
-			})
-		} else {
-			this.unset('value')
+			var found = productsDB.filter(function(item){
+				name = item.get('name');
+	        	return regexp.test(name);
+			});
+
+			return found;
+		},
+		findProduct: function () {
+			var string = this.get('string'),
+				found;
+
+			found = this.filterProduct();
+
+			if (found.length > 1) {
+				this.set('product', undefined);
+				return "Нужно уточнить (найдено " + found.length + ")";
+			} else if (found.length === 1) {
+				this.set('product', found[0].attributes);
+				return;
+			} else {
+				this.set('product', undefined);
+				return "Ничего не найдено";
+			}
+		},
+	})
+}
+
+//Backbone Views
+var Views = {
+	
+	//Ввод продукта
+	Input: Backbone.View.extend({
+		initialize: function () {
+			this.model = new Models.Eaten();
+			this.listenModelEvents();
+
+			// this.collection.create();
+			// this.model = this.collection.last();
+		},
+		events: {
+			'keyup input': 'modelChange',
+			'submit': 'add'
+		},
+		listenModelEvents: function () {
+			this.model.on('change:product', this.showMatch, this);
+			this.model.on('change:value', this.showValue, this)
+		},
+		/**
+		 * Добавляем в список съеденного
+		 */
+		add: function (event) {
+			event.preventDefault();
+			if (this.model.get('product') && this.model.get('value')) {
+
+				this.collection.add(this.model);
+				this.model.save();
+
+				this.model = new Models.Eaten();
+				this.listenModelEvents();
+
+				// this.model.save();
+			
+				//Создаем новый экземпляр съеденного
+
+				// this.collection.create();
+				// this.model = this.collection.last();
+				
+			}
+		},
+		filterInput: function () {
+			var input = this.$el.find('input').val();
+			return {
+				string: input.match(/([^0-9 ]+)/gi),
+				numbers: input.match(/(\d+)/gi)
+			}
+		},
+		modelChange: function () {
+			var data = this.filterInput();
+
+			if (data.numbers && data.numbers.length) {
+				this.model.set('weight', data.numbers[0])
+			} else {
+				this.model.set('weight', DEFAULT_WEIGHT)
+			}
+
+			if (data.string && data.string.length) {
+				this.model.set('string', data.string[0])
+			}
+		},
+		showMatch: function () {
+			var product = this.model.get('product'),
+				match = this.$el.find('.eaten__product'),
+				template = _.template($('#db-item').html());
+
+			if (product) {
+				match.html(template(product));
+			} else {
+				match.html('Нет совпадения');
+			}
+		},
+		showValue: function (argument) {
+			var value = this.model.get('value'),
+				el = this.$el.find('.eaten__value'),
+				template = _.template($('#eaten-value').html());
+
+			if (value) {
+				el.html(template(value));
+			} else {
+				el.html('');
+			}
 		}
-	},
-	filterProduct: function () {
-		var string = this.get('string'),
-			db = productsDB,
-			regexp = new RegExp(string);
+	}),
 
-		var found = productsDB.filter(function(item){
-			name = item.get('name');
-        	return regexp.test(name);
-		});
-
-		return found;
-	},
-	findProduct: function () {
-		var string = this.get('string'),
-			found;
-
-		found = this.filterProduct();
-
-		if (found.length > 1) {
-			this.set('productModel', undefined);
-			return "Нужно уточнить (найдено " + found.length + ")";
-		} else if (found.length === 1) {
-			this.set('productModel', found[0]);
-			return;
-		} else {
-			this.set('productModel', undefined);
-			return "Ничего не найдено";
+	//Список съеденного
+	EatenCollection: Backbone.View.extend({
+		initialize: function () {
+			this.collection.on('change add remove sync', this.render, this);
+		},
+		render: function () {
+			this.$el.html('');
+			this.collection.each(function (eaten) {
+				var view = new Views.Eaten({model: eaten});
+				this.$el.append(view.render().el);
+			}, this)
 		}
-	},
+	}),
 
-});
+	//Элемент списка съеденного
+	Eaten: Backbone.View.extend({
+		tagName: 'li',
+		template: _.template($('#eaten-view').html()),
+		events: {
+			'click .delete': 'remove'
+		},
+		initialize: function () {
+			this.model.on('change add remove', this.render, this);
+			this.render();
+		},
+		render: function () {
+			this.$el.html(this.template(this.model.attributes));
+			return this;
+		},
+		remove: function () {
+			this.model.destroy();
+		}
+	}),
 
-var eaten = new Eaten();
-// e.set({
-// 	'string': 'тун',
-// 	'weight': 40
-// });
+	//Итоговая сумма всего съеденного
+	AllEaten: Backbone.View.extend({
+		template: _.template($('#all').html()),
+		initialize: function () {
+			this.collection.on('change add remove sync', this.render, this);
+		},
+		render: function () {
+			this.$el.html(this.template(this.count()));
+			return this;
+		},
+		count: function () {
+			var all = new Value();
 
-var ProductsDBView = Backbone.View.extend({
-	tagName: 'li',
-	template: _.template($('#db-item').html()),
-	initialize: function () {
-		//
-	},
-	render: function () {
-		this.$el.append(this.template(this.model.attributes));
-		return this;
-	}
-});
+			this.collection.each(function(eaten) {
+				var value = eaten.get('value');
+				all.proteins += value.proteins;
+				all.carbohydrates += value.carbohydrates;
+				all.fats += value.fats;
+				all.calories += value.calories;
+			});
 
-var ProductsDBCollectionView = Backbone.View.extend({
-	tagName: 'ul',
-	initialize: function () {
-		this.collection.on('sync', this.render, this);
-		$('body').append(this.el);
-	},
-	render: function () {
-		this.collection.each(function(product) {
-			var view = new ProductsDBView({model: product});
-			this.$el.append(view.render().el)
-		}, this);
+			return all;
+		}
+	}),
 
-		return this;
-	}
-});
+	//Список продуктов в БД
+	ProductsDB: Backbone.View.extend({
+		tagName: 'ul',
+		initialize: function () {
+			this.collection.on('sync', this.render, this);
+			$('body').append(this.el);
+		},
+		render: function () {
+			this.$el.html('');
+			this.collection.each(function (product) {
+				var view = new Views.Product({model: product});
+				this.$el.append(view.render().el)
+			}, this);
 
-var productsDBCollectionView = new ProductsDBCollectionView({
+			return this;
+		}
+	}),
+
+	//Строка в списке БД продуктов
+	Product: Backbone.View.extend({
+		tagName: 'li',
+		template: _.template($('#db-item').html()),
+		render: function () {
+			this.$el.append(this.template(this.model.attributes));
+			return this;
+		}
+	})
+
+};
+
+//Backbone Collections
+var Collections = {
+
+	//БД продуктов
+	ProductsDB: Backbone.Collection.extend({
+		model: Models.Product,
+		url: '/products-db.json'
+	}),
+
+	//Коллекция для моделей съеденного
+	Eaten: Backbone.Collection.extend({
+		model: Models.Eaten,
+		localStorage: new Backbone.LocalStorage("eaten")
+	})
+}
+
+
+/**********************************************/
+
+
+//Список продуктов
+var productsDB = new Collections.ProductsDB();
+var productsDBCollectionView = new Views.ProductsDB({
 	collection: productsDB
 });
+productsDB.fetch();
 
-var InputView = Backbone.View.extend({
-	initialize: function () {
-		this.model.on('change:productModel', this.showMatch, this);
-		this.model.on('change:value', this.showValue, this)
-	},
-	events: {
-		'keyup input': 'modelChange'
-	},
-	filterInput: function () {
-		var input = this.$el.find('input').val();
-		return {
-			string: input.match(/([^0-9 ]+)/g),
-			numbers: input.match(/(\d+)/g)
-		}
-	},
-	modelChange: function () {
-		var data = this.filterInput();
+//Список съеденного
+var eatenCollection = new Collections.Eaten();
 
-		if (data.numbers && data.numbers.length) {
-			this.model.set('weight', data.numbers[0])
-		} else {
-			this.model.set('weight', DEFAULT_WEIGHT)
-		}
-
-		if (data.string && data.string.length) {
-			this.model.set('string', data.string[0])
-		}
-	},
-	showMatch: function () {
-		var productModel = this.model.get('productModel'),
-			product = this.$el.find('.eaten__product'),
-			template = _.template($('#db-item').html());
-
-		if (productModel) {
-			product.html(template(productModel.attributes));
-		} else {
-			product.html('Нет совпадения');
-		}
-	},
-	showValue: function (argument) {
-		var value = this.model.get('value'),
-			el = this.$el.find('.eaten__value'),
-			template = _.template($('#eaten-value').html());
-
-		if (value) {
-			el.html(template(value));
-		} else {
-			el.html('');
-		}
-	}
-});
-
-var inputView = new InputView({
-	model: eaten,
+//Инпут для создания модели съеденного
+var inputView = new Views.Input({
+	collection: eatenCollection,
 	el: $('#eaten')
 });
 
-productsDB.fetch();
+//Отображение списка съеденного
+var eatenCollectionView = new Views.EatenCollection({
+	el: $('.eaten'),
+	collection: eatenCollection
+});
+
+//Отображение счетчика всего съеденного
+var allEatenView = new Views.AllEaten({
+	el: $('.all'),
+	collection: eatenCollection
+});
+
+eatenCollection.fetch();
+
+//TODO подсказка при вводе ("уточните...")
+//TODO связывать модель продукта со съеденным по id

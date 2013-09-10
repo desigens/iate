@@ -1,0 +1,44 @@
+body {
+	font-family: 'Helvetica';
+	line-height: 1.2;
+	font-size: 14px;
+}
+.wrapper {
+	width: 320px;
+	box-shadow: 0 0 5px #888;
+	padding: 10px;
+}
+.all {
+	text-align: center;
+	font-size: 24px;
+	padding: 20px;
+}
+.eaten {
+	padding: 0;
+	.delete	{
+		float: right;
+		display: none;
+		cursor: pointer;
+	}
+	li {
+		list-style-position: inside;
+		padding: 2px 8px;
+		&:hover {
+			background: #f3f3f3;
+			.delete {
+				display: block;
+			}
+		}	
+	}
+}
+.eaten__value,
+.eaten__product {
+	font-size: 11px;
+	color: #555;
+}
+#eaten {
+	input {
+		font-size: 18px;
+		width: 90%;
+	}
+}

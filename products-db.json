@@ -57,7 +57,7 @@
     "name": "хлопья",
     "proteins": "3.5",
     "carbohydrates": "40",
-    "fats": ".5",
+    "fats": "0.5",
     "calories": "185",
     "weight": "50",
     "portion": 100
@@ -75,16 +75,16 @@
     "name": "банан",
     "proteins": "1.5",
     "carbohydrates": "20",
-    "fats": ".5",
+    "fats": "0.5",
     "calories": "100",
     "weight": "100",
     "portion": 100
   },
   {
     "name": "яблоко",
-    "proteins": ".5",
+    "proteins": "0.5",
     "carbohydrates": "10",
-    "fats": ".5",
+    "fats": "0.5",
     "calories": "50",
     "weight": "100",
     "portion": 100
@@ -92,7 +92,7 @@
   {
     "name": "яйцо.вкрутую",
     "proteins": "6",
-    "carbohydrates": ".5",
+    "carbohydrates": "0.5",
     "fats": "5",
     "calories": "77",
     "weight": "50",
@@ -110,7 +110,7 @@
   {
     "name": "Куриная.грудка",
     "proteins": "23",
-    "carbohydrates": ".5",
+    "carbohydrates": "0.5",
     "fats": "2",
     "calories": "113",
     "weight": "100",
@@ -147,7 +147,7 @@
     "name": "рис.пол.пакета",
     "proteins": "5",
     "carbohydrates": "48",
-    "fats": ".5",
+    "fats": "0.5",
     "calories": "217",
     "weight": 100,
     "portion": 100
@@ -198,12 +198,12 @@
     "portion": 100
   },
   {
-    "name": "50",
+    "name": "порция.белка.Бел.",
     "proteins": "12.5",
     "carbohydrates": "30",
-    "fats": ".5",
-    "calories": "порция.белка.Бел.",
-    "weight": 100,
+    "fats": "0.5",
+    "calories": "100",
+    "weight": 50,
     "portion": 100
   }
 ]
