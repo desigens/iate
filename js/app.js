@@ -25,7 +25,7 @@ var Models = {
 			string: "",
 			product: undefined,
 			weight: DEFAULT_WEIGHT,
-			value: {}
+			value: undefined
 		},
 		initialize: function () {
 			this.on('change', this.calcValue, this);
@@ -108,25 +108,26 @@ var Views = {
 				this.collection.add(this.model);
 				this.model.save();
 
+				//Создаем новый экземпляр съеденного
 				this.model = new Models.Eaten();
 				this.listenModelEvents();
 
-				// this.model.save();
-			
-				//Создаем новый экземпляр съеденного
+				//Очищаем инпут после добавления
+				this.$el.find('input').val('');
 
-				// this.collection.create();
-				// this.model = this.collection.last();
-				
+				//TODO Как следить за созданной моделью? (change не отрабатывает)
+				this.showMatch();
+				this.showValue();
 			}
 		},
 		filterInput: function () {
 			var input = this.$el.find('input').val();
 			return {
-				string: input.match(/([^0-9 ]+)/gi),
+				string: input.match(/([A-Za-zА-ЯА-я\s]+)/gi),
 				numbers: input.match(/(\d+)/gi)
 			}
 		},
+		//При вводе текста в инпут меняем модель Eaten (sting, weight)
 		modelChange: function () {
 			var data = this.filterInput();
 
@@ -140,6 +141,7 @@ var Views = {
 				this.model.set('string', data.string[0])
 			}
 		},
+		//Следим за изменениями в модели (как только там появляется product)
 		showMatch: function () {
 			var product = this.model.get('product'),
 				match = this.$el.find('.eaten__product'),
@@ -148,14 +150,14 @@ var Views = {
 			if (product) {
 				match.html(template(product));
 			} else {
-				match.html('Нет совпадения');
+				match.html('');
 			}
 		},
-		showValue: function (argument) {
+		//Следим за изменениями в модели (как только там появляется value)
+		showValue: function () {
 			var value = this.model.get('value'),
 				el = this.$el.find('.eaten__value'),
 				template = _.template($('#eaten-value').html());
-
 			if (value) {
 				el.html(template(value));
 			} else {

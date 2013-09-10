@@ -90,13 +90,14 @@
     "portion": 100
   },
   {
-    "name": "яйцо.вкрутую",
-    "proteins": "6",
-    "carbohydrates": "0.5",
-    "fats": "5",
-    "calories": "77",
-    "weight": "50",
-    "portion": 100
+    "name": "яйцо",
+    "proteins": "12",
+    "carbohydrates": "1",
+    "fats": "10",
+    "calories": "154",
+    "weight": "100",
+    "portion": 50,
+    "item": "штука"
   },
   {
     "name": "цезарь.ролл",
@@ -105,7 +106,8 @@
     "fats": "24",
     "calories": "510",
     "weight": 100,
-    "portion": 100
+    "portion": 100,
+    "item": "порция"
   },
   {
     "name": "Куриная.грудка",
@@ -205,5 +207,14 @@
     "calories": "100",
     "weight": 50,
     "portion": 100
+  },
+  {
+    "name": "творог обезж. домик",
+    "proteins": "18",
+    "carbohydrates": "1.8",
+    "fats": "0.2",
+    "calories": "81",
+    "weight": 100,
+    "portion": 170
   }
 ]
