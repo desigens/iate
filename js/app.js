@@ -21,13 +21,15 @@ var Value = function () {
 var Models = {
 
 
-	// Общая модель приложения (?)
+	// Общая модель приложения.
+	// TODO Запоминать последний выбранный день
+	// TODO Сделать app глобальной переменной (?)
 	App: Backbone.Model.extend({
 		currentDay: undefined
 	}),
 
 
-	//День (?)
+	//День пользователя (пока просто timestamp-дата)
 	Day: Backbone.Model.extend(),
 
 
@@ -53,10 +55,6 @@ var Models = {
 		calcValue: function () {
 			var product = this.get('product'),
 				weight;
-
-				 // = parseInt(this.get('weight')) || parseInt(this.get('product').portion) || parseInt(this.get('product').weight)
-
-				// console.log(this.attributes);
 
 			if (product) {
 
@@ -440,8 +438,6 @@ var Views = {
 
 			all.user = user.attributes;
 
-			// console.log(all);
-
 			return all;
 		}
 	}),
@@ -501,7 +497,9 @@ var Views = {
 	}),
 
 
-	//Список дней (папки)
+	// Список дней
+	// TODO Сделать даты вместо timestamp
+	// TODO Придумать дизайн управления днями
 	Days: Backbone.View.extend({
 
 		//Коллекция моделей дней
@@ -559,15 +557,12 @@ var Views = {
 var app = new Models.App();
 
 var user = new Models.UserRate();
-// console.log(user);
 
 //Список продуктов
 var productsDB = new Collections.ProductsDB();
 var productsDBCollectionView = new Views.ProductsDB({
 	collection: productsDB
 });
-productsDB.fetch();
-
 
 //Список съеденного
 var eatenCollection = new Collections.Eaten([], {
@@ -580,8 +575,8 @@ var allEatenView = new Views.AllEaten({
 	el: $('.all'),
 	collection: eatenCollection
 });
+// TODO почему не через конструктор?
 allEatenView.user = user;
-
 
 // Инициализируем список дней пользователя
 var daysCollection = new Collections.Days([], {
@@ -596,7 +591,6 @@ var eatenCollectionView = new Views.EatenCollection({
 	daysCollection: daysCollection
 });
 
-
 //Инпут для создания модели съеденного
 var inputView = new Views.Input({
 	app: app,
@@ -604,8 +598,8 @@ var inputView = new Views.Input({
 	days: daysCollection,
 	el: $('#eaten')
 });
+// TODO почему не через конструктор?
 inputView.daysCollection = daysCollection;
-
 
 // Список дней пользователя, и кнопка «Новый день»
 var daysView = new Views.Days({
@@ -614,8 +608,8 @@ var daysView = new Views.Days({
 	collection: daysCollection
 });
 
-
 // Данные обновлять после того, как созданы все вьюхи
+productsDB.fetch();
 eatenCollection.fetch();
 daysCollection.fetch();
 
