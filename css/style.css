@@ -1,42 +1,341 @@
+/*
+YUI 3.7.1 (build 5627)
+Copyright 2012 Yahoo! Inc. All rights reserved.
+Licensed under the BSD License.
+http://yuilibrary.com/license/
+*/
+html {
+  color: #000;
+  background: #ffffff;
+}
+body,
+div,
+dl,
+dt,
+dd,
+ul,
+ol,
+li,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+pre,
+code,
+form,
+fieldset,
+legend,
+input,
+textarea,
+p,
+blockquote,
+th,
+td {
+  margin: 0;
+  padding: 0;
+}
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+fieldset,
+img {
+  border: 0;
+}
+address,
+caption,
+cite,
+code,
+dfn,
+em,
+strong,
+th,
+var {
+  font-style: normal;
+  font-weight: normal;
+}
+ol,
+ul {
+  list-style: none;
+}
+caption,
+th {
+  text-align: left;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-size: 100%;
+  font-weight: normal;
+}
+q:before,
+q:after {
+  content: '';
+}
+abbr,
+acronym {
+  border: 0;
+  font-variant: normal;
+}
+sup {
+  vertical-align: text-top;
+}
+sub {
+  vertical-align: text-bottom;
+}
+input,
+textarea,
+select {
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+}
+input,
+textarea,
+select {
+  *font-size: 100%;
+}
+legend {
+  color: #000000;
+}
+#yui3-css-stamp.cssreset {
+  display: none;
+}
+footer {
+  display: block;
+}
 body {
-  font-family: 'Helvetica';
+  font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+  font-weight: 300;
   line-height: 1.2;
   font-size: 14px;
 }
+b {
+  font-family: "Helvetica Neue";
+  font-weight: 600;
+}
 .wrapper {
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
   width: 320px;
-  box-shadow: 0 0 5px #888;
   padding: 10px;
 }
-.all {
+.new-day {
   text-align: center;
-  font-size: 24px;
-  padding: 20px;
+  border-bottom: 1px #ccc solid;
+}
+.new-day li {
+  cursor: pointer;
+  padding: 5px;
+  font-size: 12px;
+}
+.new-day li :hover {
+  color: #333;
+}
+.new-day li.current {
+  font-weight: bold;
+}
+.new-day__add {
+  display: block;
+  background: #eee;
+  padding: 15px 20px;
+  font-size: 15px;
+  color: #333;
+}
+.all .progress {
+  border-radius: 16px;
+  position: relative;
+  width: 200px;
+  height: 16px;
+  background: #eee;
+}
+.all .progress__bar {
+  height: 16px;
+  line-height: 16px;
+  font-size: 11px;
+  text-indent: 6px;
+  color: #fff;
+  border-radius: 16px;
+  text-shadow: 0 1px 0.5px rgba(0, 0, 0, 0.3);
+  background-image: -o-linear-gradient(-90deg, #2ca6f8 0%, #2336a8 100%);
+  background-image: -moz-linear-gradient(-90deg, #2ca6f8 0%, #2336a8 100%);
+  background-image: -webkit-linear-gradient(-90deg, #2ca6f8 0%, #2336a8 100%);
+  background-image: -ms-linear-gradient(-90deg, #2ca6f8 0%, #2336a8 100%);
+  background-image: linear-gradient(-180deg, #2ca6f8 0%, #2336a8 100%);
+}
+.all .progress__bar_carbohydrates {
+  background-image: -o-linear-gradient(-90deg, #afe667 0%, #318f35 100%);
+  background-image: -moz-linear-gradient(-90deg, #afe667 0%, #318f35 100%);
+  background-image: -webkit-linear-gradient(-90deg, #afe667 0%, #318f35 100%);
+  background-image: -ms-linear-gradient(-90deg, #afe667 0%, #318f35 100%);
+  background-image: linear-gradient(-180deg, #afe667 0%, #318f35 100%);
+}
+.all .progress__bar_fats {
+  background-image: -o-linear-gradient(-90deg, #ffd570 0%, #ff6b29 100%);
+  background-image: -moz-linear-gradient(-90deg, #ffd570 0%, #ff6b29 100%);
+  background-image: -webkit-linear-gradient(-90deg, #ffd570 0%, #ff6b29 100%);
+  background-image: -ms-linear-gradient(-90deg, #ffd570 0%, #ff6b29 100%);
+  background-image: linear-gradient(-180deg, #ffd570 0%, #ff6b29 100%);
+}
+.all .progress__bar_calories {
+  background-image: -o-linear-gradient(-90deg, #ff555e 0%, #a8101a 100%);
+  background-image: -moz-linear-gradient(-90deg, #ff555e 0%, #a8101a 100%);
+  background-image: -webkit-linear-gradient(-90deg, #ff555e 0%, #a8101a 100%);
+  background-image: -ms-linear-gradient(-90deg, #ff555e 0%, #a8101a 100%);
+  background-image: linear-gradient(-180deg, #ff555e 0%, #a8101a 100%);
+}
+.all .progress small {
+  font-size: 10px;
+  display: block;
+  clear: both;
+  position: absolute;
+  top: 100%;
+  color: #999;
+  right: 0;
+}
+.all figure {
+  padding: 0;
+  margin: 0;
+  overflow: hidden;
+  height: 36px;
+}
+.all figure div {
+  float: left;
+}
+.all figurecaption {
+  float: left;
+  width: 70px;
+  text-align: right;
+  margin-right: 6px;
+  font-size: 13px;
 }
 .eaten {
-  padding: 0;
+  padding: 10px 0 0 0;
 }
 .eaten .delete {
   float: right;
-  display: none;
   cursor: pointer;
+  font-size: 20px;
+  line-height: 15px;
+  background: #eee;
+  border-radius: 20px;
+  height: 20px;
+  width: 20px;
+  text-align: center;
+  color: #fff;
+  border: 4px #ffffff solid;
+  position: relative;
+  top: -6px;
 }
 .eaten li {
   list-style-position: inside;
-  padding: 2px 8px;
-}
-.eaten li:hover {
-  background: #f3f3f3;
-}
-.eaten li:hover .delete {
-  display: block;
+  padding: 8px 8px;
+  border-bottom: 1px #eee solid;
 }
 .eaten__value,
 .eaten__product {
   font-size: 11px;
-  color: #555;
+  line-height: 1.3;
+}
+.eaten__value b,
+.eaten__product b {
+  font-size: 13px;
+  font-weight: normal;
+}
+.eaten__tip {
+  margin-top: 2px;
+  margin-bottom: -5px;
+  background: #2f91f8;
+  padding: 10px 20px;
+  color: #fff;
+  position: relative;
+  cursor: pointer;
+}
+.eaten__tip:before,
+.eaten__tip:after {
+  content: '';
+  width: 0px;
+  height: 0px;
+  border-style: solid;
+  border-width: 0 10px 10px  10px;
+  border-color: transparent transparent #2f91f8 transparent;
+  position: absolute;
+  bottom: 100%;
+  margin-bottom: -1px;
+  left: 15px;
+}
+.eaten__tip:before {
+  border-width: 0 12px 12px  12px;
+  left: 13px;
+  border-color: transparent transparent #fff transparent;
+  margin-bottom: 0px;
+}
+.eaten__tip.hidden {
+  display: none;
+}
+.db {
+  background: #eeeeee;
+}
+.db p {
+  text-align: center;
+  padding: 20px 0;
+  cursor: pointer;
+  text-decoration: underline;
+}
+.db li {
+  font-size: 12px;
+  line-height: 1.5;
+  padding-left: 10px;
+}
+.db__list {
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  background: #ddd;
+  padding: 10px;
+  box-shadow: inset 0 2px 4px -1px #999999;
+  overflow: hidden;
+}
+.db__list.hidden {
+  height: 1px;
+  padding: 0;
 }
 #eaten input {
+  padding: 5px;
+  height: 56px;
   font-size: 18px;
-  width: 90%;
+  width: 100%;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  border-radius: 0;
+  background: #FFFFFF;
+  -webkit-appearance: none;
+  border: 5px solid #dedede;
+}
+#eaten input:focus {
+  border: 5px solid #2f91f8;
+  outline: none;
+}
+#eaten input::-webkit-input-placeholder {
+  text-align: center;
+  color: #ccc;
+}
+#eaten input:-moz-placeholder {
+  text-align: center;
+  color: #ccc;
+}
+#eaten input::-moz-placeholder {
+  text-align: center;
+  color: #ccc;
+}
+#eaten input:-ms-input-placeholder {
+  text-align: center;
+  color: #ccc;
 }

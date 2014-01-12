@@ -1,40 +1,119 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title></title>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width">
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <title>iAte</title>
 	<link rel="stylesheet" type="text/css" href="css/style.css">
 </head>
 <body>
+
+<!-- http://edimka.ru/text/sostav-produktov/calorii -->
+
+<!-- Белок: 35-40% ккал от суточного рациона (в 1 грамме белка 4 ккал).
+Жиры: 15-20% ккал от суточного рациона (в 1 грамме жиров 9 ккал).
+Углеводы: 35-45% ккал от суточного рациона (в 1 грамме углеводов 4 ккал). -->
+
+<!-- 1 грамм углеводов = 4 калории
+1 грамм белка = 4 калории
+1 грамм жира = 9 калорий
+
+Пример для дневного рациона в 2400 калорий в сутки
+
+Углеводы: 55% (0,55) х 2400 = 1320 калорий
+1320 калорий / 4 калории в одном грамме = 330 грамм углеводов
+
+Белки: 30% (0,30) х 2400 = 720 калорий 
+720 калорий / 4 калории в одном грамме = 180 грамм белка
+
+Жиры: 15% (0,15) х 2400 = 360 калорий 
+360 калорий / 9 калорий в одном грамме = 40 грамм жиров -->
+
+<!-- <div contenteditable="true">213412</div> -->
 <div class="wrapper">
 
 	<div class="all"></div>
 
 	<form id="eaten">
-		<input type="text" id="input">
-		<div class="eaten__product"></div>
-		<div class="eaten__value"></div>
+		<input type="text" id="input"  placeholder="Добавить" autocomplete="off">
+		<div class="eaten__tip hidden">
+			<div class="eaten__product"></div>
+			<div class="eaten__value"></div>
+		</div>
 	</form>
 
 	<ul class="eaten"></ul>
 
+	<div class="new-day">
+		<a class="new-day__add" href="#">Новый день</a>
+		<ul class="list"></ul>
+	</div>
+
 </div>
 
 <script type="text/template" id="all">
-	<%= proteins %> <%= carbohydrates %> <%= fats %> <%= calories %>
+	<figure>
+		<figurecaption>
+			Белки
+		</figurecaption>
+		<div class="progress">
+			<div class="progress__bar progress__bar_proteins" style="width: <%= proteinsP %>%"><%= proteins %> </div>
+			<small><%= proteinsP %>% от необходимых <%= user.proteins %></small>
+		</div>
+	</figure>
+	<figure>
+		<figurecaption>
+			Углеводы
+		</figurecaption>
+		<div class="progress">
+			<div class="progress__bar progress__bar_carbohydrates" style="width: <%= carbohydratesP %>%"><%= carbohydrates %></div>
+			<small><%= carbohydratesP %>% от необходимых <%= user.carbohydrates %></small>
+		</div>
+	</figure>
+	<figure>
+		<figurecaption>
+			Жиры
+		</figurecaption>
+		<div class="progress">
+			<div class="progress__bar progress__bar_fats" style="width: <%= fatsP %>%"><%= fats %> </div>
+			<small><%= fatsP %>% от необходимых <%= user.fats %></small>
+		</div>
+	</figure>
+	<figure>
+		<figurecaption>
+			Калории
+		</figurecaption>
+		<div class="progress">
+			<div class="progress__bar progress__bar_calories" style="width: <%= caloriesP %>%"><%= calories %></div>
+			<small><%= caloriesP %>% от необходимых <%= user.calories %></small>
+		</div>
+	</figure>
+</script>
+
+<script type="text/template" id="db">
+	<p class="db__header"><a>Все продукты</a> (<%= count %>)</p>
+	<ul class="db__list hidden"></ul>
+	<p><a class="db__refresh">Обновить БД продуктов</a></p>
+	<p><a class="db__reset">Удалить все записи</a></p>
 </script>
 
 <script type="text/template" id="db-item">
-	<b>Продукт</b>: <%= name %> (<%= proteins %>, <%= carbohydrates %>, <%= fats %>, <%= calories %>)
+	<b><%= data.name %>
+	<!--(на 100 г: <%= data.proteins %>, <%= data.carbohydrates %>, <%= data.fats %>, <%= data.calories %>)--></b>
 </script>
 
 <script type="text/template" id="eaten-view">
+	<a class="delete">×</a>
 	<%= product.name %>, <%= value.weight %>г.
-	(<%= value.proteins %>, <%= value.carbohydrates %>, <%= value.fats %>, <%= value.calories %>) <span class="delete">x</span>
+	(<%= value.proteins %>, <%= value.carbohydrates %>, <%= value.fats %>, <%= value.calories %>)
 </script>
 
 <script type="text/template" id="eaten-value">
-	<b>Съедено (<%= weight %>):</b>
-		<%= proteins %>, <%= carbohydrates %>, <%= fats %>, <%= calories %>
+	Добавить
+		<!--TODO Разобраться с формированием надписи-->
+		<%= product.item ? product.item : '' %> <%= value.weight ? value.weight : product.portion %>г
+		(<%= value.proteins %>, <%= value.carbohydrates %>, <%= value.fats %>, <%= value.calories %>)
 </script>
 
 <script type="text/template" id="indicator">
@@ -49,7 +128,6 @@
 			<dd><%= calories %></dd>
 	</dl>
 </script>
-
 
 <script src="js/jquery.js"></script>
 <script src="js/underscore.js"></script>
