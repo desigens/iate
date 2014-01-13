@@ -28,14 +28,37 @@ b {
 	text-align: center;
 	border-bottom: 1px #ccc solid;
 	li {
+
+		list-style-position: inside;
+		padding: 8px 8px;
+		border-bottom: 1px #eee solid;
+	
 		cursor: pointer;
-		padding: 5px;
+
 		font-size: 12px;
 		:hover {
 			color: #333;
 		}
 		&.current {
 			font-weight: bold;
+		}
+		.delete	{
+			font-weight: normal;
+			float: right;
+			cursor: pointer;
+			font-size: 20px;
+			line-height: 15px;
+			background: #eee;
+			border-radius: 20px;
+			height: 20px;
+			width: 20px;
+			text-align: center;
+			color: #fff;
+			
+			//чтобы удобнее попасть
+			border: 4px rgba(255, 255, 255, 1) solid;
+			position: relative;
+			top: -6px;
 		}
 	}
 	&__add {

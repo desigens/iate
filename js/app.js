@@ -4,6 +4,24 @@ function toFixed (value, precision) {
 	return String(Math.round(value * power) / power);
 }
 
+function dateFormat(timestamp) {
+	var date,
+		string = '',
+		months = ['января', 'февраля', 'марта', 'апреля',
+        'мая', 'июня', 'июля', 'августа', 'сентября',
+        'октября', 'ноября', 'декабря'],
+		days = ['понедельник', 'вторник', 'среда', 'четверг', 'пятница', 'суббота', 'воскресенье'];
+
+	date = new Date(timestamp);
+
+	string += days[date.getDay()];
+	string += ', ' + date.getDate();
+	string += ' ' + months[date.getMonth()];
+	string += ' ' + date.getFullYear();
+
+	return string;
+}
+
 // Вес продукта по-умолчанию
 var DEFAULT_WEIGHT = 100;
 
@@ -498,7 +516,6 @@ var Views = {
 
 
 	// Список дней
-	// TODO Сделать даты вместо timestamp
 	// TODO Придумать дизайн управления днями
 	Days: Backbone.View.extend({
 
@@ -510,42 +527,73 @@ var Views = {
 			this.collection.on('add', this.render, this);
 
 			this.app = this.options.app;
-
-			this.listenTo(this.app, 'change', this.highlightCurrentDay);
 		},
 
 		events: {
-			'click a': 'newdayHandler',
-			'click .list': 'filter'
-		},
-
-		filter: function (e) {
-			var day = e.target.innerText;
-			this.app.set('currentDay', parseInt(day, 10));
+			'click a': 'newdayHandler'
 		},
 
 		render: function () {
 			// TODO Уменьшить количество рендеров при инициализации
 			// console.log('render');
-			var html = '';
+			var	$lis = $('<div>');
+			
 			this.collection.each(function (item) {
-				html += '<li>' + item.get('day') + '</li>';	
-			}, this)
-			this.$list.html(html);
-			this.highlightCurrentDay();
+				var li = new Views.DaysItem({
+					model: item,
+					app: this.app
+				});
+				$lis.append(li.render());
+			}, this);
+			this.$list.html($lis);
 		},
 
 		newdayHandler: function (e) {
 			e.preventDefault();
 			this.collection.addDay();
-		},
+		}
+	}),
 
+	// День в списке
+	DaysItem: Backbone.View.extend({
+		
+		template: _.template($('#day').html()),
+
+		initialize: function () {
+			this.app = this.options.app;
+			this.listenTo(this.model, 'destroy', this.remove);
+			this.listenTo(this.app, 'change:currentDay', this.highlightCurrentDay);
+		},
+		events: {
+			'click': 'filter',
+			'click .delete': 'delete'
+		},
+		render: function () {
+			el = this.template({
+				text: dateFormat(this.model.get('day')) 
+			});
+			this.setElement(el);
+			return this.$el;
+		},
+		filter: function () {
+			var day = this.model.get('day');
+			this.app.set('currentDay', parseInt(day, 10));
+		},
+		delete: function () {
+			this.model.destroy();
+		},
+		remove: function () {
+			this.$el.remove();
+		},
 		// Обозначем текущий день в списке
 		highlightCurrentDay: function () {
 			var day = this.app.get('currentDay') || '';
-			this.$el.find('li').removeClass('current').filter(function () {
-				return this.innerText === day.toString();
-			}).addClass('current');
+			
+			if (this.model.get('day') === day) {
+				this.$el.addClass('current');
+			} else {
+				this.$el.removeClass('current');
+			}
 		}
 	})
 
