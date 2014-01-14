@@ -22,6 +22,9 @@ function dateFormat(timestamp) {
 	return string;
 }
 
+var app;
+var id = 1;
+
 // Вес продукта по-умолчанию
 var DEFAULT_WEIGHT = 100;
 
@@ -43,7 +46,17 @@ var Models = {
 	// TODO Запоминать последний выбранный день
 	// TODO Сделать app глобальной переменной (?)
 	App: Backbone.Model.extend({
-		currentDay: undefined
+		
+		localStorage: new Backbone.LocalStorage("app"),
+
+		initialize: function () {
+			this.set('id', id);
+			this.on('change:currentDay', this.s, this);
+		},
+		
+		s: function () {
+			this.save();
+		}
 	}),
 
 
@@ -145,6 +158,7 @@ var Models = {
 var Collections = {
 
 
+
 	//БД продуктов
 	ProductsDB: Backbone.Collection.extend({
 		model: Models.Product,
@@ -160,17 +174,13 @@ var Collections = {
 		// Эту коллекцию мы храним в Local Storage
 		localStorage: new Backbone.LocalStorage("eaten"),
 
-		initialize: function (models, options) {
-			this.app = options.app;
-		},
-
 		// Возвращает набор моделей съеденного за определенный день
 		filterByDay: function (day) {
 			return this.where({day: parseInt(day, 10)});
 		},
 
 		currentDay: function () {
-			var currentDay = this.app.get('currentDay');
+			var currentDay = app.get('currentDay');
 			return this.where({day: parseInt(currentDay, 10)});
 		}
 	}),
@@ -187,8 +197,6 @@ var Collections = {
 		initialize: function (models, options) {
 			// После загрузки проверяем
 			this.on('sync', this.syncHandler, this);
-
-			this.app = options.app;
 		},
 
 		// Действия после загрузки дней пользователя
@@ -198,7 +206,11 @@ var Collections = {
 				this.addDay();
 			}
 
-			this.app.set('currentDay', this.lastDate());
+			// app.trigger('change');
+
+			// app.fetch();
+
+			// this.app.set('currentDay', this.lastDate());
 		},
 
 		// Добавляем день и сохраняем его
@@ -250,8 +262,6 @@ var Views = {
 			this.model = new Models.Eaten();
 
 			this.listenModelEvents();
-
-			this.app = this.options.app;
 		},
 		
 		events: {
@@ -280,7 +290,7 @@ var Views = {
 
 				//Устанавливаем текущий день
 				// TODO Вынести добавление даты в модель
-				this.model.set('day', this.app.get('currentDay'));
+				this.model.set('day', app.get('currentDay'));
 
 				this.collection.add(this.model);
 				this.model.save();
@@ -365,7 +375,7 @@ var Views = {
 
 		initialize: function () {
 			this.collection.on('change add remove sync', this.render, this);
-			this.options.app.on('change', this.render, this);
+			app.on('change', this.render, this);
 		},
 		render: function () {
 			// console.log('EatenCollection render');
@@ -421,7 +431,7 @@ var Views = {
 		template: _.template($('#all').html()),
 		initialize: function () {
 			this.collection.on('change add remove sync', this.render, this);
-			this.options.app.on('change', this.render, this);
+			app.on('change', this.render, this);
 		},
 		render: function () {
 			// console.log(this.collection.length);
@@ -524,28 +534,18 @@ var Views = {
 
 		initialize: function () {
 			this.$list = this.$('.list');
-			this.collection.on('add', this.render, this);
-
-			this.app = this.options.app;
+			this.collection.on('add', this.add, this);
 		},
 
 		events: {
 			'click a': 'newdayHandler'
 		},
 
-		render: function () {
-			// TODO Уменьшить количество рендеров при инициализации
-			// console.log('render');
-			var	$lis = $('<div>');
-			
-			this.collection.each(function (item) {
-				var li = new Views.DaysItem({
-					model: item,
-					app: this.app
-				});
-				$lis.append(li.render());
-			}, this);
-			this.$list.html($lis);
+		add: function (model, collection, options) {
+			var li = new Views.DaysItem({
+				model: model
+			});
+			this.$list.append(li.render());
 		},
 
 		newdayHandler: function (e) {
@@ -560,10 +560,10 @@ var Views = {
 		template: _.template($('#day').html()),
 
 		initialize: function () {
-			this.app = this.options.app;
 			this.listenTo(this.model, 'destroy', this.remove);
-			this.listenTo(this.app, 'change:currentDay', this.highlightCurrentDay);
+			this.listenTo(app, 'change', this.hightlight);
 		},
+
 		events: {
 			'click': 'filter',
 			'click .delete': 'delete'
@@ -573,11 +573,12 @@ var Views = {
 				text: dateFormat(this.model.get('day')) 
 			});
 			this.setElement(el);
+			this.hightlight();
 			return this.$el;
 		},
 		filter: function () {
 			var day = this.model.get('day');
-			this.app.set('currentDay', parseInt(day, 10));
+			app.set('currentDay', day);
 		},
 		delete: function () {
 			this.model.destroy();
@@ -585,15 +586,13 @@ var Views = {
 		remove: function () {
 			this.$el.remove();
 		},
-		// Обозначем текущий день в списке
-		highlightCurrentDay: function () {
-			var day = this.app.get('currentDay') || '';
-			
-			if (this.model.get('day') === day) {
+		hightlight: function () {
+			if (this.model.get('day') === app.get('currentDay')) {
 				this.$el.addClass('current');
 			} else {
 				this.$el.removeClass('current');
 			}
+
 		}
 	})
 
@@ -602,7 +601,7 @@ var Views = {
 
 /**********************************************/
 
-var app = new Models.App();
+app = new Models.App();
 
 var user = new Models.UserRate();
 
@@ -613,13 +612,10 @@ var productsDBCollectionView = new Views.ProductsDB({
 });
 
 //Список съеденного
-var eatenCollection = new Collections.Eaten([], {
-	app: app
-});
+var eatenCollection = new Collections.Eaten();
 
 //Отображение счетчика всего съеденного
 var allEatenView = new Views.AllEaten({
-	app: app,
 	el: $('.all'),
 	collection: eatenCollection
 });
@@ -627,13 +623,10 @@ var allEatenView = new Views.AllEaten({
 allEatenView.user = user;
 
 // Инициализируем список дней пользователя
-var daysCollection = new Collections.Days([], {
-	app: app
-});
+var daysCollection = new Collections.Days();
 
 //Отображение списка съеденного
 var eatenCollectionView = new Views.EatenCollection({
-	app: app,
 	el: $('.eaten'),
 	collection: eatenCollection,
 	daysCollection: daysCollection
@@ -641,7 +634,6 @@ var eatenCollectionView = new Views.EatenCollection({
 
 //Инпут для создания модели съеденного
 var inputView = new Views.Input({
-	app: app,
 	collection: eatenCollection,
 	days: daysCollection,
 	el: $('#eaten')
@@ -651,15 +643,16 @@ inputView.daysCollection = daysCollection;
 
 // Список дней пользователя, и кнопка «Новый день»
 var daysView = new Views.Days({
-	app: app,
 	el: $('.new-day'),
 	collection: daysCollection
 });
 
 // Данные обновлять после того, как созданы все вьюхи
+app.fetch();
 productsDB.fetch();
 eatenCollection.fetch();
 daysCollection.fetch();
 
+//TODO Удалять продукты удаленного дня
 //TODO подсказка при вводе ("уточните...")
 //TODO связывать модель продукта со съеденным по id
