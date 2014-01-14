@@ -1,3 +1,10 @@
+// TODO при добавлении нового дня — переходить на него
+// TODO Удаление последнего дня — ставить текущим последний/следующий
+//TODO Удалять продукты удаленного дня
+//TODO подсказка при вводе ("уточните...")
+//TODO связывать модель продукта со съеденным по id
+
+
 //Вспомогательные функции
 function toFixed (value, precision) {
 	var power = Math.pow(10, precision || 2);
@@ -43,8 +50,6 @@ var Models = {
 
 
 	// Общая модель приложения.
-	// TODO Запоминать последний выбранный день
-	// TODO Сделать app глобальной переменной (?)
 	App: Backbone.Model.extend({
 		
 		localStorage: new Backbone.LocalStorage("app"),
@@ -205,25 +210,20 @@ var Collections = {
 			if (this.length === 0) {
 				this.addDay();
 			}
-
-			// app.trigger('change');
-
-			// app.fetch();
-
-			// this.app.set('currentDay', this.lastDate());
 		},
 
 		// Добавляем день и сохраняем его
 		addDay: function () {
-			var today = new this.model({
+			var dayModel;
+			
+			dayModel = new this.model({
 				day: new Date().getTime()
 			});
 
-			// Как сохранить всю коллекцию, а не одну модель?
-			this.add(today);
-			
-			today.save();
-			// console.log('Добавляем день');
+			this.add(dayModel);			
+			dayModel.save();
+
+			app.set('currentDay', dayModel.get('day'));
 		},
 
 		lastDate: function () {
@@ -652,7 +652,3 @@ app.fetch();
 productsDB.fetch();
 eatenCollection.fetch();
 daysCollection.fetch();
-
-//TODO Удалять продукты удаленного дня
-//TODO подсказка при вводе ("уточните...")
-//TODO связывать модель продукта со съеденным по id
