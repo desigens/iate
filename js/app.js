@@ -167,7 +167,7 @@ var Collections = {
 	//БД продуктов
 	ProductsDB: Backbone.Collection.extend({
 		model: Models.Product,
-		url: '/products-db.json'
+		url: '/api/products'
 	}),
 
 

@@ -2,12 +2,14 @@
   "name": "iate",
   "scripts": {
     "start": "forever start -с nodemon server.js",
-    "develop": "./node_modules/.bin/grunt watch"
+    "develop": "./node_modules/.bin/nodemon server.js",
+    "watch": "./node_modules/.bin/grunt watch"
   },
   "dependencies": {
     "forever": "*",
     "express": "*",
-    "nodemon": "*"
+    "nodemon": "*",
+    "mongoose": "*"
   },
   "devDependencies": {
     "grunt-cli": "*",
