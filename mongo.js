@@ -21,26 +21,40 @@ mongoose.connect('mongodb://localhost/iate');
 // TODO вынести в единый код
 // TODO разобраться с типами данных
 var Product = new mongoose.Schema({
-	name: {type: String },
-	proteins: {type: String },
-	carbohydrates: {type: String },
-	fats: {type: String },
-	calories: {type: String },
-	portion: {type: String }
+	name: String,
+	proteins: Number,
+	carbohydrates: Number,
+	fats: Number,
+	calories: Number,
+	weight: Number,
+	portion: Number,
+	item: String
 })
 
 var ProductModel = mongoose.model('Product', Product);
 
+// Импорт записей из файла (осторожно!)
+// var fs = require('fs');
+// var db = [];
+// fs.readFile('products-db.json', 'utf8', function (err, data) {
+// 	db = JSON.parse(data);
+// 	db.forEach(function (item) {
+// 		// console.log(item);
+// 		new ProductModel(item).save();
+// 	});
+// });
+
 // Добавление записи в БД
 // Если параметра нет в схеме — игнорируется.
 // new ProductModel({
-// 	"name": "122зерн. творог",
-//     "proteins": "15",
+//     "name": "тунец",
+//     "proteins": "30.4",
 //     "carbohydrates": 0,
-//     "fats": "18",
-//     "calories": 6,
+//     "fats": "1.5",
+//     "calories": 130.0,
 //     "weight": 100,
-//     "portion": 150
+//     "portion": 130,
+//     "item": "банка"
 // }).save();
 
 // Удаление всей «таблицы» (аккуратно с ней!)
