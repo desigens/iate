@@ -264,6 +264,27 @@ b {
 
 		}
 	}
+	&__form {
+		padding: 0 10px 10px;
+		input {
+			&[name="name"] {
+				width: 100%;
+			}
+			&[name="portion"] {
+				width: 30%;
+			}
+			&[name="item"] {
+				width: 60%;
+			}
+			.border-box;
+			margin-bottom: 5px;
+			width: 17%;
+			padding: 3px;
+		}
+		&.hidden {
+			display: none;
+		}
+	}
 }
 
 a {

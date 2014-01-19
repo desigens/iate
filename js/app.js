@@ -481,6 +481,7 @@ var Views = {
 		},
 		events: {
 			'click .db__header': 'toggle',
+			'click .db__add': 'form',
 			'click .db__refresh': 'refresh',
 			'click .db__reset': 'reset'
 		},
@@ -510,7 +511,13 @@ var Views = {
 				localStorage.clear();
 				window.location.reload();
 			}
-		}
+		},
+		// Отображение формы добавления продукта
+		form: function () {
+			this.$('.db__form').toggleClass('hidden')
+				// Фокус на первом инпуте
+				.find('input:visible').eq(0).focus();			
+		},
 	}),
 
 

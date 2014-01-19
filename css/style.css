@@ -324,6 +324,29 @@ b {
   height: 1px;
   padding: 0;
 }
+.db__form {
+  padding: 0 10px 10px;
+}
+.db__form input {
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  margin-bottom: 5px;
+  width: 17%;
+  padding: 3px;
+}
+.db__form input[name="name"] {
+  width: 100%;
+}
+.db__form input[name="portion"] {
+  width: 30%;
+}
+.db__form input[name="item"] {
+  width: 60%;
+}
+.db__form.hidden {
+  display: none;
+}
 #eaten input {
   padding: 5px;
   height: 56px;
