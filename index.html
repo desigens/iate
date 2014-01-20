@@ -98,8 +98,17 @@
 <script type="text/template" id="db">
 
 	<p class="db__add">Добавить продукт</p>
-	<form class="db__form hidden">
-		<input type="text" name="name" placeholder="Название">
+
+	<p class="db__header"><a>Все продукты</a> (<span class="db__counter"><%= count %></span>)</p>
+	<ul class="db__list hidden"></ul>
+	
+	<p><a class="db__refresh">Обновить БД продуктов</a></p>
+	<p><a class="db__reset">Удалить все записи</a></p>
+</script>
+
+<script type="text/template" id="db-form">
+	<form class="db__form">
+		<input type="text" name="name" placeholder="Название" value="Продукт">
 		<input type="text" name="proteins" placeholder="Белки">
 		<input type="text" name="carbohydrates" placeholder="Углеводы">
 		<input type="text" name="fats" placeholder="Жиры">
@@ -107,13 +116,8 @@
 		в <input type="text" name="weight" value="100" readonly="readonly" placeholder="Вес (100)" tabindex="-1"> г
 		<input type="text" name="item" placeholder="«упаковка», «штука» и т.д.">:
 		<input type="text" name="portion" placeholder="вес порции"> г
+		<button>Добавить</button>
 	</form>
-
-	<p class="db__header"><a>Все продукты</a> (<%= count %>)</p>
-	<ul class="db__list hidden"></ul>
-	
-	<p><a class="db__refresh">Обновить БД продуктов</a></p>
-	<p><a class="db__reset">Удалить все записи</a></p>
 </script>
 
 <script type="text/template" id="db-item">

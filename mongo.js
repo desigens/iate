@@ -11,6 +11,11 @@ mkdir -p /data/db
 chown `id -u` /data/db
 ./mongod
 
+
+PATH=$PATH:~/путь/к/mondodb/bin/
+export PATH
+
+
 TODO запускать монго как сервис (или через forever)
 */
 

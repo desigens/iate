@@ -476,8 +476,11 @@ var Views = {
 		className: 'db',
 		template: _.template($('#db').html()),
 		initialize: function () {
-			this.collection.on('sync', this.render, this);
 			$('.wrapper').append(this.el);
+			this.render();
+
+			this.collection.on('add remove', this.count, this);
+			this.collection.on('add', this.add, this);
 		},
 		events: {
 			'click .db__header': 'toggle',
@@ -493,12 +496,23 @@ var Views = {
 
 			this.$list = this.$('.db__list');
 
-			this.collection.each(function (product) {
-				var view = new Views.Product({model: product});
-				this.$list.append(view.render().el)
-			}, this);
+			var form = new Views.ProductForm({
+				collection: this.collection
+			});
+
+			$('.db__add').after(form.render());
 
 			return this;
+		},
+		add: function (model) {
+			var view = new Views.Product({model: model});
+			$('.db__list').append(view.render().el);
+			
+			// TODO не сохранять модели, которые пришли с сервера и не были изменены
+			model.save();
+		},
+		count: function () {
+			$('.db__counter').html(this.collection.length);
 		},
 		toggle: function () {
 			this.$list.toggleClass('hidden');
@@ -530,7 +544,6 @@ var Views = {
 			return this;
 		}
 	}),
-
 
 	// Список дней
 	// TODO Придумать дизайн управления днями
@@ -600,6 +613,37 @@ var Views = {
 				this.$el.removeClass('current');
 			}
 
+		}
+	}),
+
+	// Форма добавления нового продукта
+	ProductForm: Backbone.View.extend({
+		template: _.template($('#db-form').html()),
+		events: {
+			'submit': 'add'
+		},
+		initialize: function () {
+			// this.setElement();
+			// console.log('hello', this.el, this.$el);
+		},
+		render: function () {
+			el = this.template();
+			this.setElement(el);
+			return this.$el;
+		},
+		add: function (e) {
+			e.preventDefault()
+			this.collection.add(this.toObject());
+			// console.log(this.collection);
+		},
+		toObject: function () {
+			var obj = {}
+			this.$('input').each(function () {
+				var key = $(this).attr('name');
+				obj[key] = $(this).val();
+			})
+			console.log(obj);
+			return obj;
 		}
 	})
 
