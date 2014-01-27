@@ -1,5 +1,7 @@
 /*global IAte */
 
+// Модели и коллекции
+
 IAte.module('Products', function (Products, App, Backbone) {
 
 	//Модель продукта в БД

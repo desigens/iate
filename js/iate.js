@@ -523,10 +523,10 @@ var Views = {
 			$('.db__list').append(view.render().el);
 			
 			// TODO не сохранять модели, которые пришли с сервера и не были изменены
-			model.save();
+			// model.save();
 		},
 		count: function () {
-			$('.db__counter').html(this.collection.length);
+			this.$('.db__counter').html(this.collection.length);
 		},
 		toggle: function () {
 			this.$list.toggleClass('hidden');
