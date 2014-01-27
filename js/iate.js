@@ -5,6 +5,20 @@
 //TODO связывать модель продукта со съеденным по id
 
 
+var IAte = new Backbone.Marionette.Application();
+
+IAte.addRegions({
+	header: '#header',
+	main: '#main',
+	footer: '#footer'
+});
+
+IAte.on('initialize:after', function () {
+    Backbone.history.start();
+});
+
+
+
 //Вспомогательные функции
 function toFixed (value, precision) {
 	var power = Math.pow(10, precision || 2);

@@ -33,6 +33,10 @@
 <!-- <div contenteditable="true">213412</div> -->
 <div class="wrapper">
 
+	<header id="header"></header>
+	<div id="main"></div>
+	<footer id="footer"></footer>
+
 	<div class="all"></div>
 
 	<form id="eaten">
@@ -151,10 +155,17 @@
 	</dl>
 </script>
 
-<script src="js/jquery.js"></script>
-<script src="js/underscore.js"></script>
-<script src="js/backbone.js"></script>
-<script src="js/backbone.localStorage.js"></script>
-<script src="js/app.js"></script>
+<script src="js/libs/jquery.js"></script>
+<script src="js/libs/underscore.js"></script>
+<script src="js/libs/backbone.js"></script>
+<script src="js/libs/backbone.marionette.js"></script>
+<script src="js/libs/backbone.localStorage.js"></script>
+
+<script src="js/iate.js"></script>
+<script src="js/iate.products.js"></script>
+<script>
+	IAte.start();
+</script>
+
 </body>
 </html>

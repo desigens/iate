@@ -11,12 +11,21 @@ mkdir -p /data/db
 chown `id -u` /data/db
 ./mongod
 
-
 PATH=$PATH:~/путь/к/mondodb/bin/
 export PATH
 
 
+Запуск mongo, установленного через homebrew:
+MongoDB starting : pid=1704 port=27017 dbpath=/usr/local/var/mongodb 64-bit host=Deniss-MacBook-Pro.local
+
 TODO запускать монго как сервис (или через forever)
+To have launchd start mongodb at login:
+    ln -sfv /usr/local/opt/mongodb/*.plist ~/Library/LaunchAgents
+Then to load mongodb now:
+    launchctl load ~/Library/LaunchAgents/homebrew.mxcl.mongodb.plist
+Or, if you don't want/need launchctl, you can just run:
+    mongod
+
 */
 
 var mongoose = require('mongoose');
