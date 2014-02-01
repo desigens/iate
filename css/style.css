@@ -181,7 +181,7 @@ b {
   color: #fff;
   border-radius: 16px;
   text-shadow: 0 1px 0.5px rgba(0, 0, 0, 0.3);
-  background-image: -o-linear-gradient(-90deg, #2ca6f8 0%, #2336a8 100%);
+  background-image: -o-linear-gradient(-90deg, #2336a8 0%, #2336a8 100%);
   background-image: -moz-linear-gradient(-90deg, #2ca6f8 0%, #2336a8 100%);
   background-image: -webkit-linear-gradient(-90deg, #2ca6f8 0%, #2336a8 100%);
   background-image: -ms-linear-gradient(-90deg, #2ca6f8 0%, #2336a8 100%);
@@ -390,6 +390,22 @@ b {
   list-style-position: inside;
   padding: 8px 8px;
   border-bottom: 1px #eee solid;
+}
+.b-db__value {
+  display: inline-block;
+  border-bottom: 2px solid #fff;
+}
+.b-db__value_proteins {
+  border-color: #2ca6f8;
+}
+.b-db__value_carbohydrates {
+  border-color: #afe667;
+}
+.b-db__value_fats {
+  border-color: #ffd570;
+}
+.b-db__value_calories {
+  border-color: #ff555e;
 }
 .delete {
   font-weight: normal;

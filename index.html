@@ -132,7 +132,16 @@
 </script>
 
 <script type="text/template" id="template-db-item">
-    <b><%= name %></b> <span class="delete">&times;</span>
+    <span class="delete">&times;</span>
+    <b><%= name %></b> <%= proteins %>, <%= carbohydrates %>, <%= fats %>, <%= calories %><br>
+    <% multipl = 1.6 %>
+    <div style="font-size: 5px;">
+        <span class="b-db__value b-db__value_proteins" style="width: <%= proteins * multipl %>px"></span>
+        <span class="b-db__value b-db__value_carbohydrates" style="width: <%= carbohydrates * multipl %>px"></span>
+        <span class="b-db__value b-db__value_fats" style="width: <%= fats * multipl %>px"></span>
+        <br>
+        <span class="b-db__value b-db__value_calories" style="width: <%= calories * 0.4 %>px"></span>
+    </div>
 </script>
 
 <script type="text/template" id="db-item">

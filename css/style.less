@@ -69,6 +69,39 @@ b {
 		color: #333;
 	}
 }
+
+@blue1: #2CA6F8;
+@blue2: #2336A8;
+@green1: #AFE667;
+@orange1: #FFD570;
+@red1: #FF555E;
+
+#colors() {
+
+    .proteins {
+
+        background-image: -o-linear-gradient(-90deg, @blue2 0%, @blue2 100%);
+        background-image: -moz-linear-gradient(-90deg, #2CA6F8 0%, #2336A8 100%);
+        background-image: -webkit-linear-gradient(-90deg, #2CA6F8 0%, #2336A8 100%);
+        background-image: -ms-linear-gradient(-90deg, #2CA6F8 0%, #2336A8 100%);
+        background-image: linear-gradient(-180deg, #2CA6F8 0%, #2336A8 100%);
+    }
+    .carbohydrates {
+        background-image: -o-linear-gradient(-90deg, #AFE667 0%, #318F35 100%);
+        background-image: -moz-linear-gradient(-90deg, #AFE667 0%, #318F35 100%);
+        background-image: -webkit-linear-gradient(-90deg, #AFE667 0%, #318F35 100%);
+        background-image: -ms-linear-gradient(-90deg, #AFE667 0%, #318F35 100%);
+        background-image: linear-gradient(-180deg, #AFE667 0%, #318F35 100%);
+    }
+    .fats {
+        background-image: -o-linear-gradient(-90deg, #FFD570 0%, #FF6B29 100%);
+        background-image: -moz-linear-gradient(-90deg, #FFD570 0%, #FF6B29 100%);
+        background-image: -webkit-linear-gradient(-90deg, #FFD570 0%, #FF6B29 100%);
+        background-image: -ms-linear-gradient(-90deg, #FFD570 0%, #FF6B29 100%);
+        background-image: linear-gradient(-180deg, #FFD570 0%, #FF6B29 100%);
+    }
+}
+
 .all {
 	.progress {
 
@@ -102,28 +135,16 @@ b {
 			// box-shadow: inset 0 -2px 6px rgba(0,0,0, .5), inset 0 2px 4px rgba(255,255,255, .5), inset 0 2px 8px rgba(255,255,255, .8);
 			text-shadow: 0 1px .5px rgba(0, 0, 0, 0.3);
 
-			background-image: -o-linear-gradient(-90deg, #2CA6F8 0%, #2336A8 100%);
-			background-image: -moz-linear-gradient(-90deg, #2CA6F8 0%, #2336A8 100%);
-			background-image: -webkit-linear-gradient(-90deg, #2CA6F8 0%, #2336A8 100%);
-			background-image: -ms-linear-gradient(-90deg, #2CA6F8 0%, #2336A8 100%);
-			background-image: linear-gradient(-180deg, #2CA6F8 0%, #2336A8 100%);
+			#colors.proteins;
 
 			&_proteins {
 				//same
 			}
 			&_carbohydrates {
-				background-image: -o-linear-gradient(-90deg, #AFE667 0%, #318F35 100%);
-				background-image: -moz-linear-gradient(-90deg, #AFE667 0%, #318F35 100%);
-				background-image: -webkit-linear-gradient(-90deg, #AFE667 0%, #318F35 100%);
-				background-image: -ms-linear-gradient(-90deg, #AFE667 0%, #318F35 100%);
-				background-image: linear-gradient(-180deg, #AFE667 0%, #318F35 100%);
+				#colors.carbohydrates;
 			}
 			&_fats {
-				background-image: -o-linear-gradient(-90deg, #FFD570 0%, #FF6B29 100%);
-				background-image: -moz-linear-gradient(-90deg, #FFD570 0%, #FF6B29 100%);
-				background-image: -webkit-linear-gradient(-90deg, #FFD570 0%, #FF6B29 100%);
-				background-image: -ms-linear-gradient(-90deg, #FFD570 0%, #FF6B29 100%);
-				background-image: linear-gradient(-180deg, #FFD570 0%, #FF6B29 100%);
+				#colors.fats;
 			}
 			&_calories {
 				background-image: -o-linear-gradient(-90deg, #FF555E 0%, #A8101A 100%);
@@ -349,6 +370,23 @@ a {
     list-style-position: inside;
     padding: 8px 8px;
     border-bottom: 1px #eee solid;
+}
+
+.b-db__value {
+    display: inline-block;
+    border-bottom: 2px solid #fff;
+    &_proteins {
+        border-color: @blue1;
+    }
+    &_carbohydrates {
+        border-color: @green1;
+    }
+    &_fats {
+        border-color: @orange1;
+    }
+    &_calories {
+        border-color: @red1;
+    }
 }
 
 .delete {
