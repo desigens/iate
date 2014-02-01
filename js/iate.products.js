@@ -10,7 +10,16 @@ IAte.module('Products', function (Products, App, Backbone) {
 	// Коллекция БД продуктов
 	Products.ProductsDB = Backbone.Collection.extend({
 		model: Products.Product,
-		url: '/api/products'
+		url: '/api/products',
+        initialize: function () {
+            this.on('add', this.saveNewProduct);
+        },
+        saveNewProduct: function (model, collection, options) {
+            // Модель не пришла с сервера, а добавлена через форму
+            if (!options.xhr) {
+                model.save();
+            }
+        }
 	});
 
     // Вьюха строки в списке продуктов
