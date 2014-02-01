@@ -18,7 +18,13 @@ IAte.module('Products', function (Products, App, Backbone) {
         saveNewProduct: function (model, collection, options) {
             // Модель не пришла с сервера, а добавлена через форму
             if (!options.xhr) {
-                model.save();
+                model.save()
+                    // После сохранения модели на сервере,
+                    // получаем ID в БД (для удаления/обновления)
+                    .done(function (data) {
+                        model.set('_id', data.product._id);
+                        console.log(data.product._id, model.id);
+                    });
             }
         }
 	});

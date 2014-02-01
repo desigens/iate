@@ -46,6 +46,23 @@ app.post('/api/products', function (req, res) {
 	})
 });
 
+app.delete('/api/products/:id', function (req, res) {
+    return ProductModel.findById(req.params.id, function (err, product) {
+        if (!product) {
+            res.statusCode = 404;
+            return res.send({error: 'Not found'});
+        }
+        return product.remove(function (err) {
+            if (!err) {
+                return res.send({ status: 'OK' });
+            } else {
+                res.statusCode = 500;
+                return res.send({ error: 'Server error' });
+            }
+        })
+    })
+});
+
 app.listen(port, function () {
 	console.log('Server running at port: ' + port);
 });
