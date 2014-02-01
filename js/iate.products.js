@@ -4,7 +4,8 @@ IAte.module('Products', function (Products, App, Backbone) {
 
 	// Модель продукта в БД
 	Products.Product = Backbone.Model.extend({
-		defaults: new Value()
+		defaults: new Value(),
+        idAttribute: '_id'
 	});
 
 	// Коллекция БД продуктов
@@ -24,7 +25,18 @@ IAte.module('Products', function (Products, App, Backbone) {
 
     // Вьюха строки в списке продуктов
     Products.ItemView = Backbone.Marionette.ItemView.extend({
-        template: '#template-db-item'
+        tagName: 'li',
+        className: 'b-db__item',
+        template: '#template-db-item',
+        ui: {
+            delete: '.delete'
+        },
+        events: {
+            "click @ui.delete": "removeItem"
+        },
+        removeItem: function () {
+            this.model.destroy();
+        }
     });
 
     // Вьюха списка продуктов
