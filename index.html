@@ -33,7 +33,9 @@
 <!-- <div contenteditable="true">213412</div> -->
 <div class="wrapper">
 
-	<header id="header"></header>
+	<header id="header">
+        <a href="#">Глагне</a> | <a href="#products">База продуктов</a>
+	</header>
 	<div id="main"></div>
 	<footer id="footer"></footer>
 
@@ -129,6 +131,10 @@
 	</form>
 </script>
 
+<script type="text/template" id="template-db-item">
+    <b><%= name %></b>
+</script>
+
 <script type="text/template" id="db-item">
 	<b><%= data.name %>
 	<!--(на 100 г: <%= data.proteins %>, <%= data.carbohydrates %>, <%= data.fats %>, <%= data.calories %>)--></b>
@@ -168,9 +174,9 @@
 
 <script src="js/iate.js"></script>
 <script src="js/iate.products.js"></script>
-<script src="js/iate.layout.js"></script>
-<script src="js/iate.products-list.views.js"></script>
-<script src="js/iate.products-list.js"></script>
+<!--<script src="js/iate.layout.js"></script>-->
+<!--<script src="js/iate.products-list.views.js"></script>-->
+<!--<script src="js/iate.products-list.js"></script>-->
 <script>
 	IAte.start();
 </script>

@@ -7,9 +7,23 @@
 
 var IAte = new Backbone.Marionette.Application();
 
+// Контроллер и роутер
+IAte.controller = {
+    index: function () {
+        IAte.content.reset();
+    }
+};
+IAte.router = new Backbone.Marionette.AppRouter({
+    controller: IAte.controller,
+    appRoutes: {
+        "": "index"
+    }
+});
+
+// Регионы «окна» приложения
 IAte.addRegions({
 	header: '#header',
-	main: '#main',
+	content: '#main',
 	footer: '#footer'
 });
 

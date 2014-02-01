@@ -380,3 +380,8 @@ b {
   text-align: center;
   color: #ccc;
 }
+#header {
+  padding: 5px;
+  margin-bottom: 10px;
+  background: #eeeeee;
+}
