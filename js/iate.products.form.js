@@ -12,6 +12,9 @@ IAte.module('ProductsForm', function (ProductsForm, App, Backbone) {
         events: {
             'submit': 'add'
         },
+        collectionEvents: {
+            "add": "itemAdded"
+        },
         add: function (e) {
             e.preventDefault()
             this.collection.add(this.toObject());
@@ -24,6 +27,23 @@ IAte.module('ProductsForm', function (ProductsForm, App, Backbone) {
             })
             console.log(obj);
             return obj;
+        },
+        onDomRefresh: function () {
+            this.$('input').eq(0).focus();
+        },
+        itemAdded: function (model) {
+            // Модель добавлена через форму
+            if (!model.id) {
+                // Ждем, когда в модель запишется ID,
+                // возвращенный с сервера.
+                model.once('change', function () {
+                    var $ok = $('<span> Добавлено </span>');
+                    this.$('button').after($ok);
+                    setTimeout(function () {
+                        $ok.remove();
+                    }, 2000);
+                }, this);
+            }
         }
     });
 
