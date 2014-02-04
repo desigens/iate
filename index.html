@@ -119,20 +119,22 @@
 
 <script type="text/template" id="db-form">
 	<form class="db__form">
-		<input type="text" name="name" placeholder="Название" value="Продукт">
-		<input type="text" name="proteins" placeholder="Белки">
-		<input type="text" name="carbohydrates" placeholder="Углеводы">
-		<input type="text" name="fats" placeholder="Жиры">
-		<input type="text" name="calories" placeholder="Ккал">
-		в <input type="text" name="weight" value="100" readonly="readonly" placeholder="Вес (100)" tabindex="-1"> г
-		<input type="text" name="item" placeholder="«упаковка», «штука» и т.д.">:
-		<input type="text" name="portion" placeholder="вес порции"> г
-		<button>Добавить</button>
+        <input type="hidden" value="<%=data._id%>" name="_id" placeholder="ID">
+        <input type="text" value="<%=data.name%>" name="name" placeholder="Название">
+		<input type="text" value="<%=data.proteins%>" name="proteins" placeholder="Белки">
+		<input type="text" value="<%=data.carbohydrates%>" name="carbohydrates" placeholder="Углеводы">
+		<input type="text" value="<%=data.fats%>" name="fats" placeholder="Жиры">
+		<input type="text" value="<%=data.calories%>" name="calories" placeholder="Ккал">
+		в <input type="text" value="<%=data.weight%>" name="weight" value="100" readonly="readonly" placeholder="Вес (100)" tabindex="-1"> г
+		<input type="text" value="<%=data.item%>" name="item" placeholder="«упаковка», «штука» и т.д.">:
+		<input type="text" value="<%=data.portion%>" name="portion" placeholder="вес порции"> г
+		<button><% if (!data._id) { %>Добавить<% } else {%>Сохранить<% } %></button>
 	</form>
 </script>
 
 <script type="text/template" id="template-db-item">
     <span class="delete">&times;</span>
+    <a class="edit" href="#products/edit/<%= _id %>">Edit</a>
     <b><%= name %></b> <%= proteins %>, <%= carbohydrates %>, <%= fats %>, <%= calories %><br>
     <% multipl = 1.6 %>
     <div style="font-size: 5px;">

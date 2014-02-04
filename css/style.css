@@ -426,6 +426,9 @@ b {
 .delete:hover {
   background: #ddd;
 }
+.edit {
+  float: right;
+}
 ul {
   overflow: hidden;
 }

@@ -646,7 +646,7 @@ var Views = {
 
 	// Форма добавления нового продукта
 	ProductForm: Backbone.View.extend({
-		template: _.template($('#db-form').html()),
+		template: _.template($('#db-form').html(), null, {variable: 'data'}),
 		events: {
 			'submit': 'add'
 		},
@@ -655,7 +655,7 @@ var Views = {
 			// console.log('hello', this.el, this.$el);
 		},
 		render: function () {
-			el = this.template();
+			el = this.template({});
 			this.setElement(el);
 			return this.$el;
 		},

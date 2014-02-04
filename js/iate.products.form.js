@@ -2,13 +2,11 @@
 
 IAte.module('ProductsForm', function (ProductsForm, App, Backbone) {
 
-    ProductsForm.FormView = Backbone.Marionette.ItemView.extend({
-        template: '#db-form'
-    });
-
     // Форма добавления нового продукта
     ProductsForm.FormView = Backbone.Marionette.ItemView.extend({
-        template: '#db-form',
+        template: function(serialized_model) {
+            return _.template($('#db-form').html(), serialized_model, {variable: 'data'});
+        },
         events: {
             'submit': 'add'
         },
@@ -47,7 +45,9 @@ IAte.module('ProductsForm', function (ProductsForm, App, Backbone) {
         }
     });
 
-    // Добавляем контроллер и роут
+    // Добавляем контроллеры и роуты
+
+    // Форма добавления продукта
     App.controller.productsAdd = function () {
         // Показываем форму, где нужно
         App.content.show(new ProductsForm.FormView({
@@ -56,4 +56,11 @@ IAte.module('ProductsForm', function (ProductsForm, App, Backbone) {
     };
     App.router.appRoute("products/add", "productsAdd");
 
+    // Форма редактиорования продукта
+    App.controller.productsEdit = function (id) {
+        App.content.show(new ProductsForm.FormView({
+            model: App.db.get(id)
+        }))
+    };
+    App.router.appRoute("products/edit/:id", "productsEdit");
 });
