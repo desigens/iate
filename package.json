@@ -12,7 +12,8 @@
     "forever": "*",
     "express": "*",
     "nodemon": "*",
-    "mongoose": "*"
+    "mongoose": "*",
+    "underscore": "*"
   },
   "devDependencies": {
     "grunt-cli": "*",

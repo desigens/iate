@@ -1,3 +1,5 @@
+var _ = require('underscore');
+
 var ProductModel = require('./mongo').ProductModel;
 
 var port = 3000;
@@ -61,6 +63,31 @@ app.delete('/api/products/:id', function (req, res) {
             }
         })
     })
+});
+
+app.put('/api/products/:id', function (req, res){
+    return ProductModel.findById(req.params.id, function (err, product) {
+        if(!product) {
+            res.statusCode = 404;
+            return res.send({error: 'Not found'});
+        }
+
+        product = _.extend(product, req.body);
+
+        return product.save(function (err) {
+            if (!err) {
+                return res.send({status: 'OK', product: product});
+            } else {
+                if(err.name == 'ValidationError') {
+                    res.statusCode = 400;
+                    res.send({error: 'Validation error'});
+                } else {
+                    res.statusCode = 500;
+                    res.send({error: 'Server error'});
+                }
+            }
+        });
+    });
 });
 
 app.listen(port, function () {
