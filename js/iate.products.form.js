@@ -8,14 +8,28 @@ IAte.module('ProductsForm', function (ProductsForm, App, Backbone) {
             return _.template($('#db-form').html(), serialized_model, {variable: 'data'});
         },
         events: {
-            'submit': 'add'
+            'submit': 'submit'
         },
         collectionEvents: {
             "add": "itemAdded"
         },
-        add: function (e) {
+        submit: function (e) {
             e.preventDefault()
+            // логика разделения в App.controller.productsAdd и App.controller.productsEdit
+            if (this.collection) {
+                this.add();
+            }
+            if (this.model) {
+                this.edit();
+            }
+        },
+        add: function () {
             this.collection.add(this.toObject());
+            // + this.itemAdded() через collectionEvents
+        },
+        edit: function () {
+            this.model.set(this.toObject());
+            this.model.save();
         },
         toObject: function () {
             var obj = {}
