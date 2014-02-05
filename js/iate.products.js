@@ -12,6 +12,9 @@ IAte.module('Products', function (Products, App, Backbone) {
 	Products.ProductsDB = Backbone.Collection.extend({
 		model: Products.Product,
 		url: '/api/products',
+        comparator: function(model) {
+            return model.get('name').toLocaleLowerCase();
+        },
         initialize: function () {
             this.on('add', this.saveNewProduct);
         },
@@ -48,7 +51,31 @@ IAte.module('Products', function (Products, App, Backbone) {
     // Вьюха списка продуктов
     Products.ListView = Backbone.Marionette.CollectionView.extend({
         tagName: 'ul',
-        itemView: Products.ItemView
+        itemView: Products.ItemView,
+        appendHtml: function(collectionView, itemView, index) {
+            var childAtIndex;
+
+            // could just quickly
+            // use prepend
+            if (index === 0) {
+                return collectionView.$el
+                    .prepend(itemView.el);
+
+            } else {
+
+                // see if there is already
+                // a child at the index
+                childAtIndex = collectionView.$el
+                    .children().eq(index);
+                if (childAtIndex.length) {
+                    return childAtIndex
+                        .before(itemView.el);
+                } else {
+                    return collectionView.$el
+                        .append(itemView.el);
+                }
+            }
+        }
     });
 
     // Инстанс БД

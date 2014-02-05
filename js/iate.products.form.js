@@ -31,13 +31,19 @@ IAte.module('ProductsForm', function (ProductsForm, App, Backbone) {
             this.model.set(this.toObject());
             this.model.save();
         },
+        // Сериализуем инпуты формы в объект
         toObject: function () {
             var obj = {}
             this.$('input').each(function () {
                 var key = $(this).attr('name');
                 obj[key] = $(this).val();
             })
-            console.log(obj);
+            // Пустую строку Backbone рассматривает как вполне себе
+            // нормальный _id и пытается отправить PUT вместо POST.
+            // Помешаем ему!
+            if (obj._id === '') {
+                delete obj._id
+            }
             return obj;
         },
         onDomRefresh: function () {
