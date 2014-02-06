@@ -51,6 +51,7 @@ IAte.module('Products', function (Products, App, Backbone) {
     // Вьюха списка продуктов
     Products.ListView = Backbone.Marionette.CollectionView.extend({
         tagName: 'ul',
+        className: 'b-db',
         itemView: Products.ItemView,
         appendHtml: function(collectionView, itemView, index) {
             var childAtIndex;

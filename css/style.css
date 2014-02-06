@@ -128,7 +128,6 @@ b {
 }
 .new-day {
   text-align: center;
-  border-bottom: 1px #ccc solid;
 }
 .new-day li {
   list-style-position: inside;
@@ -385,6 +384,14 @@ b {
   margin-bottom: 10px;
   background: #eeeeee;
 }
+#header a {
+  color: #333;
+  padding: 0 10px;
+}
+.b-db {
+  overflow: hidden;
+  padding-bottom: 20px;
+}
 .b-db__item {
   font-size: 12px;
   list-style-position: inside;
@@ -428,7 +435,6 @@ b {
 }
 .edit {
   float: right;
-}
-ul {
-  overflow: hidden;
+  margin-right: 20px;
+  color: #2ca6f8;
 }

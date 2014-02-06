@@ -137,10 +137,10 @@ var Models = {
 		},
 		filterProduct: function () {
 			var string = this.get('string'),
-				db = productsDB,
+				db = IAte.db,
 				regexp = new RegExp(string, 'gi');
 
-			var found = productsDB.filter(function(item){
+			var found = IAte.db.filter(function(item){
 				name = item.get('name');
 	        	return regexp.test(name);
 			});
@@ -189,15 +189,6 @@ var Models = {
 
 //Backbone Collections
 var Collections = {
-
-
-
-	//БД продуктов
-	ProductsDB: Backbone.Collection.extend({
-		model: Models.Product,
-		url: '/api/products'
-	}),
-
 
 	// Коллекция для моделей съеденного за все время.
 	// Эту коллекцию мы целиком храним в Storage.
@@ -498,81 +489,6 @@ var Views = {
 		}
 	}),
 
-
-	//Список продуктов в БД
-	ProductsDB: Backbone.View.extend({
-		className: 'db',
-		template: _.template($('#db').html()),
-		initialize: function () {
-			$('.wrapper').append(this.el);
-			this.render();
-
-			this.collection.on('add remove', this.count, this);
-			this.collection.on('add', this.add, this);
-		},
-		events: {
-			'click .db__header': 'toggle',
-			'click .db__add': 'form',
-			'click .db__refresh': 'refresh',
-			'click .db__reset': 'reset'
-		},
-		render: function () {
-			
-			this.$el.html(this.template({
-				count: this.collection.size()
-			}));
-
-			this.$list = this.$('.db__list');
-
-			var form = new Views.ProductForm({
-				collection: this.collection
-			});
-
-			$('.db__add').after(form.render());
-
-			return this;
-		},
-		add: function (model) {
-			var view = new Views.Product({model: model});
-			$('.db__list').append(view.render().el);
-			
-			// TODO не сохранять модели, которые пришли с сервера и не были изменены
-			// model.save();
-		},
-		count: function () {
-			this.$('.db__counter').html(this.collection.length);
-		},
-		toggle: function () {
-			this.$list.toggleClass('hidden');
-		},
-		refresh: function () {
-			this.collection.fetch();
-		},
-		reset: function () {
-			if (window.confirm('Точно удалить?')) {
-				localStorage.clear();
-				window.location.reload();
-			}
-		},
-		// Отображение формы добавления продукта
-		form: function () {
-			this.$('.db__form').toggleClass('hidden')
-				// Фокус на первом инпуте
-				.find('input:visible').eq(0).focus();			
-		},
-	}),
-
-
-	//Строка в списке БД продуктов
-	Product: Backbone.View.extend({
-		tagName: 'li',
-		template: _.template($('#db-item').html()),
-		render: function () {
-			this.$el.append(this.template({data: this.model.attributes}));
-			return this;
-		}
-	}),
-
 	// Список дней
 	// TODO Придумать дизайн управления днями
 	Days: Backbone.View.extend({
@@ -642,37 +558,6 @@ var Views = {
 			}
 
 		}
-	}),
-
-	// Форма добавления нового продукта
-	ProductForm: Backbone.View.extend({
-		template: _.template($('#db-form').html(), null, {variable: 'data'}),
-		events: {
-			'submit': 'add'
-		},
-		initialize: function () {
-			// this.setElement();
-			// console.log('hello', this.el, this.$el);
-		},
-		render: function () {
-			el = this.template({});
-			this.setElement(el);
-			return this.$el;
-		},
-		add: function (e) {
-			e.preventDefault()
-			this.collection.add(this.toObject());
-			// console.log(this.collection);
-		},
-		toObject: function () {
-			var obj = {}
-			this.$('input').each(function () {
-				var key = $(this).attr('name');
-				obj[key] = $(this).val();
-			})
-			console.log(obj);
-			return obj;
-		}
 	})
 
 };
@@ -683,12 +568,6 @@ var Views = {
 app = new Models.App();
 
 var user = new Models.UserRate();
-
-//Список продуктов
-var productsDB = new Collections.ProductsDB();
-var productsDBCollectionView = new Views.ProductsDB({
-	collection: productsDB
-});
 
 //Список съеденного
 var eatenCollection = new Collections.Eaten();
@@ -728,6 +607,5 @@ var daysView = new Views.Days({
 
 // Данные обновлять после того, как созданы все вьюхи
 app.fetch();
-productsDB.fetch();
 eatenCollection.fetch();
 daysCollection.fetch();
