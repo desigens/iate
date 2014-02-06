@@ -423,8 +423,50 @@ var Views = {
 			'click .delete': 'remove'
 		},
 		initialize: function () {
-			this.model.on('change add remove', this.render, this);
-			this.render();
+            var startX;
+            var $el;
+            var next;
+
+            function a (e) {
+                $el = $(e.target);
+                startX = e.originalEvent.pageX || e.originalEvent.touches[0].pageX;
+            }
+
+            function b (e) {
+                var diff;
+                next = e.originalEvent.pageX || e.originalEvent.touches[0].pageX;
+                diff = startX - next;
+                if (diff > 50) {
+                    $el.trigger('swipe:left');
+                }
+                if (diff < -50) {
+                    $el.trigger('swipe:right');
+                }
+                if (diff > 10 || diff < -10) {
+                    return false;
+                }
+            }
+            function c (e) {
+                next = el = startX = null;
+            }
+
+            this.$el.on('swipe:right', function () {
+                $(this).removeClass('ready-for-deleting');
+            });
+            this.$el.on('swipe:left', function () {
+                $(this).addClass('ready-for-deleting');
+            });
+
+            this.$el.on('touchstart', a);
+            this.$el.on('touchmove', b);
+            this.$el.on('touchend', c);
+
+            this.$el.on('dragstart', a);
+            this.$el.on('dragover', b);
+            this.$el.on('dragend', c);
+
+            this.model.on('change add remove', this.render, this);
+            this.render();
 		},
 		render: function () {
 			// console.log('render');
@@ -609,3 +651,7 @@ var daysView = new Views.Days({
 app.fetch();
 eatenCollection.fetch();
 daysCollection.fetch();
+
+if (window.ontouchstart !== undefined) {
+   $('body').addClass('touch');
+};

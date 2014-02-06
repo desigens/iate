@@ -397,6 +397,26 @@ a {
     }
 }
 
+
+.touch {
+    .eaten li {
+        overflow: hidden;
+        .delete {
+            background: @red1;
+            -webkit-transition: all .3s ease-in-out;
+            transition: all .3s ease-in-out;
+            position: relative;
+            left: 35px;
+        }
+        &.ready-for-deleting .delete {
+            left: 0;
+        }
+    }
+}
+
+
+
+
 .delete {
     font-weight: normal;
     float: right;
@@ -409,6 +429,15 @@ a {
     width: 20px;
     text-align: center;
     color: #fff;
+
+
+
+//    visibility: hidden;
+//    opacity: 0;
+//    .ready-for-deleting & {
+//        visibility: visible;
+//        opacity: 1;
+//    }
 
     //чтобы удобнее попасть
     border: 4px rgba(255, 255, 255, 1) solid;

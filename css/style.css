@@ -414,6 +414,19 @@ b {
 .b-db__value_calories {
   border-color: #ff555e;
 }
+.touch .eaten li {
+  overflow: hidden;
+}
+.touch .eaten li .delete {
+  background: #ff555e;
+  -webkit-transition: all 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out;
+  position: relative;
+  left: 35px;
+}
+.touch .eaten li.ready-for-deleting .delete {
+  left: 0;
+}
 .delete {
   font-weight: normal;
   float: right;
