@@ -13,7 +13,9 @@
     "express": "*",
     "nodemon": "*",
     "mongoose": "*",
-    "underscore": "*"
+    "underscore": "*",
+    "passport": "*",
+    "passport-local": "*"
   },
   "devDependencies": {
     "grunt-cli": "*",
