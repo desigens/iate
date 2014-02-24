@@ -296,6 +296,13 @@ b {
 .eaten__tip.hidden {
   display: none;
 }
+.eaten-tip-item {
+  border-bottom: 1px #fff solid;
+  padding: 5px 0;
+}
+.eaten-tip-item:hover {
+  background: #97c8fc;
+}
 .db {
   background: #eeeeee;
 }

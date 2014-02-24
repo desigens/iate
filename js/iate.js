@@ -135,26 +135,17 @@ var Models = {
 				this.unset('value')
 			}
 		},
-		filterProduct: function () {
-			var string = this.get('string'),
-				db = IAte.db,
-				regexp = new RegExp(string, 'gi');
 
-			var found = IAte.db.filter(function(item){
-				name = item.get('name');
-	        	return regexp.test(name);
-			});
-
-			return found;
-		},
-		findProduct: function () {
+        // Поиск подходящего продукта-эталона (или нескольких)
+        // в базе данных продуктов.
+        findProduct: function () {
 			var string = this.get('string'),
 				found;
 
-			found = this.filterProduct();
+			found = IAte.db.searchByString(string);
 
 			if (found.length > 1) {
-				this.set('product', undefined);
+				this.set('product', found);
 				return "Нужно уточнить (найдено " + found.length + ")";
 			} else if (found.length === 1) {
 				this.set('product', found[0].attributes);
@@ -163,7 +154,7 @@ var Models = {
 				this.set('product', undefined);
 				return "Ничего не найдено";
 			}
-		},
+		}
 	}),
 
 
@@ -208,6 +199,10 @@ var Collections = {
 			return this.where({day: parseInt(currentDay, 10)});
 		}
 	}),
+
+
+    // Коллекция найденых в БД продуктов по запросу
+    EatenSearchMatch: Backbone.Collection.extend({}),
 
 
 	// Коллекция с днями пользвателя (наборы съеденного)
@@ -285,9 +280,9 @@ var Views = {
 		
 		events: {
 			'keyup input': 'modelChange',
-			'blur input': 'add',
-			'submit': 'add',
-			'click .eaten__tip': 'submit'
+//			'blur input': 'add',
+//			'submit': 'add',
+			'click .eaten-tip-item': 'add'
 		},
 
 		listenModelEvents: function () {
@@ -301,6 +296,10 @@ var Views = {
 		
 		// Добавляем модель в список съеденного и создаем новую модель.
 		add: function (event) {
+            var el = event.target;
+
+            //TODO добавлять в съеденное продукт, по которому кликнули
+
 			event.preventDefault();
 
 			// console.log(this);
@@ -355,16 +354,25 @@ var Views = {
 		//Следим за изменениями в модели (как только там появляется product)
 		showMatch: function () {
 			var product = this.model.get('product'),
-				match = this.$el.find('.eaten__product'),
-				tip = this.$el.find('.eaten__tip'),
-				template = _.template($('#db-item').html());
+				$tip = this.$el.find('.eaten__tip'),
+				template = _.template($('#template-eaten-tip').html(), null, {variable: 'product'});
 
-			if (product) {
-				match.html(template({data: product}));
-				tip.removeClass('hidden');
-			} else {
-				match.html('');
-				tip.addClass('hidden')
+            if (!product) {
+                // Ничего не найдено
+                $tip.html('');
+                $tip.addClass('hidden');
+            } else if (_.isArray(product)) {
+                // Несколько продуктов
+                $tip.html('');
+                _.each(product, function (item) {
+                    console.log(item.attributes);
+                    $tip.append(template(item.attributes));
+                });
+                $tip.removeClass('hidden');
+			} else if (product) {
+            // Один продукт
+                $tip.html(template(product.attributes));
+                $tip.removeClass('hidden');
 			}
 		},
 

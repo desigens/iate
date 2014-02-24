@@ -18,6 +18,20 @@ IAte.module('Products', function (Products, App, Backbone) {
         initialize: function () {
             this.on('add', this.saveNewProduct);
         },
+
+        // Алгоритм поиска продуктов в БД
+        searchByString: function (string) {
+            var regexp, found;
+
+            regexp = new RegExp(string, 'i');
+
+            found = this.filter(function(item){
+                var name = item.get('name');
+                return regexp.test(name);
+            });
+
+            return found;
+        },
         saveNewProduct: function (model, collection, options) {
             // Модель не пришла с сервера, а добавлена через форму
             if (!options.xhr) {
