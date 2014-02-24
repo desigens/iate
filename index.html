@@ -11,8 +11,22 @@
 <div class="wrapper">
 
 	<header id="header">
-        <a href="#">Глагне</a> | <a href="#products">База продуктов</a> | <a href="#products/add">+</a>
+        <!--<a href="#" class="back hidden"><-</a>-->
+        <!--<a href="#products/add">+</a>-->
 	</header>
+
+    <script type="text/template" id="template-menu">
+        Меню
+        <nav>
+
+        </nav>
+    </script>
+
+    <script type="text/template" id="template-menu-item">
+        <%= name =>
+    </script>
+
+
 	<div id="main"></div>
 	<footer id="footer"></footer>
 
@@ -163,6 +177,7 @@
 <script src="js/iate.js"></script>
 <script src="js/iate.products.js"></script>
 <script src="js/iate.products.form.js"></script>
+<script src="js/iate.menu.js"></script>
 <!--<script src="js/iate.layout.js"></script>-->
 <!--<script src="js/iate.products-list.views.js"></script>-->
 <!--<script src="js/iate.products-list.js"></script>-->

@@ -380,9 +380,12 @@ b {
   color: #ccc;
 }
 #header {
-  padding: 5px;
+  text-align: right;
+  padding-bottom: 5px;
   margin-bottom: 10px;
-  background: #eeeeee;
+}
+#header .back {
+  float: left;
 }
 #header a {
   color: #333;
