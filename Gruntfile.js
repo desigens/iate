@@ -11,18 +11,15 @@ module.exports = function (grunt) {
 			}
 		},
 		watch: {
+            all: {
+                files: ['**/*.js', '!**/node_modules/**', '**/*.css', '**/*.html'],
+                options: {
+                    livereload: true
+                }
+            },
 			css: {
 				files: ['css/*.less'],
-				tasks: ['less:style'],
-				options: {
-					livereload: true
-				}
-			},
-			js: {
-				files: ['js/*.js'],
-				options: {
-					livereload: true
-				}
+				tasks: ['less:style']
 			}
 		}
 	});
