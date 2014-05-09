@@ -227,10 +227,11 @@ b {
 	margin-top: 2px;
 	margin-bottom: -5px;
 	background: #2f91f8;
-	padding: 10px 20px;
 	color: #fff;
 	position: relative;
 	cursor: pointer;
+	padding-top: 5px;
+	font-size: 14px;
 	&:before,
 	&:after {
         content: '';
@@ -256,10 +257,11 @@ b {
 }
 
 .eaten-tip-item {
-    border-bottom: 1px #fff solid;
-    padding: 5px 0;
+	transition: all .2s ease-in-out;
+    border-bottom: 1px mix(#2f91f8, #fff, 85%) solid;
+    padding: 12px 15px;
     &:hover {
-        background: mix(#2f91f8, #fff, 50%);
+        background: mix(#2f91f8, #fff, 85%);
     }
 }
 

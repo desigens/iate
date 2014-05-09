@@ -269,10 +269,11 @@ b {
   margin-top: 2px;
   margin-bottom: -5px;
   background: #2f91f8;
-  padding: 10px 20px;
   color: #fff;
   position: relative;
   cursor: pointer;
+  padding-top: 5px;
+  font-size: 14px;
 }
 .eaten__tip:before,
 .eaten__tip:after {
@@ -297,11 +298,12 @@ b {
   display: none;
 }
 .eaten-tip-item {
-  border-bottom: 1px #fff solid;
-  padding: 5px 0;
+  transition: all 0.2s ease-in-out;
+  border-bottom: 1px #4ea2f9 solid;
+  padding: 12px 15px;
 }
 .eaten-tip-item:hover {
-  background: #97c8fc;
+  background: #4ea2f9;
 }
 .db {
   background: #eeeeee;
