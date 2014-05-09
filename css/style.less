@@ -285,24 +285,75 @@ b {
 		}
 	}
 	&__form {
-		padding: 0 10px 10px;
+		padding: 0;
+		// border: 1px red solid;
 		input {
-			&[name="name"] {
-				width: 100%;
-			}
-			&[name="portion"] {
-				width: 30%;
-			}
-			&[name="item"] {
-				width: 60%;
-			}
+			-webkit-appearance: none;
+			width: 100%;
+			margin-top: -10px;
+			padding: 15px 5px 5px;
+			font-size: 15px;
 			.border-box;
-			margin-bottom: 5px;
-			width: 17%;
-			padding: 3px;
+			box-shadow: none;
+			background: none;
+			border: 1px #ddd solid;
+			border-radius: 0;
+			&:focus {
+				outline: none;
+			}
 		}
 		&.hidden {
 			display: none;
+		}
+		button {
+			-webkit-appearance: none;
+			box-shadow: none;
+			background: #dedede;
+			border: 5px solid #dedede;
+			color: #fff;
+			font-weight: 100;
+			width: 100%;
+			padding: 10px;
+			margin-bottom: 15px;
+			font-size: 18px;
+			&:focus {
+				outline: none;
+				// border-color: #00f;
+			}
+		}
+	}
+	&__label {
+		.border-box;
+		float: left;
+		width: 100%;
+		text-indent: 5px;
+		line-height: 0;
+		padding-top: 10px;
+		font-size: 11px;
+		color: #999;
+		margin-bottom: -1px;
+
+		&_fats,
+		&_proteins,
+		&_carbohydrates,
+		&_calories,
+		&_weight, {
+			width: 20%;
+		}
+		&_item {
+			width: 60%;
+		}
+		&_portion {
+			width: 40%;
+		}
+		&_fats,
+		&_proteins,
+		&_carbohydrates,
+		&_calories,
+		&_item {
+			input {
+				border-right: none;
+			}
 		}
 	}
 }

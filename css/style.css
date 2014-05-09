@@ -324,27 +324,75 @@ b {
   padding: 0;
 }
 .db__form {
-  padding: 0 10px 10px;
+  padding: 0;
 }
 .db__form input {
+  -webkit-appearance: none;
+  width: 100%;
+  margin-top: -10px;
+  padding: 15px 5px 5px;
+  font-size: 15px;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
-  margin-bottom: 5px;
-  width: 17%;
-  padding: 3px;
+  box-shadow: none;
+  background: none;
+  border: 1px #ddd solid;
+  border-radius: 0;
 }
-.db__form input[name="name"] {
-  width: 100%;
-}
-.db__form input[name="portion"] {
-  width: 30%;
-}
-.db__form input[name="item"] {
-  width: 60%;
+.db__form input:focus {
+  outline: none;
 }
 .db__form.hidden {
   display: none;
+}
+.db__form button {
+  -webkit-appearance: none;
+  box-shadow: none;
+  background: #dedede;
+  border: 5px solid #dedede;
+  color: #fff;
+  font-weight: 100;
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  font-size: 18px;
+}
+.db__form button:focus {
+  outline: none;
+}
+.db__label {
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  float: left;
+  width: 100%;
+  text-indent: 5px;
+  line-height: 0;
+  padding-top: 10px;
+  font-size: 11px;
+  color: #999;
+  margin-bottom: -1px;
+}
+.db__label_fats,
+.db__label_proteins,
+.db__label_carbohydrates,
+.db__label_calories,
+.db__label_weight {
+  width: 20%;
+}
+.db__label_item {
+  width: 60%;
+}
+.db__label_portion {
+  width: 40%;
+}
+.db__label_fats input,
+.db__label_proteins input,
+.db__label_carbohydrates input,
+.db__label_calories input,
+.db__label_item input {
+  border-right: none;
 }
 #eaten input {
   padding: 5px;
